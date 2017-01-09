@@ -1,9 +1,20 @@
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
 /**
  * Created by hradev01 on 09-Jan-17.
  */
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.jupiter.api.Test;
+import java.util.Calendar;
+
 class ContactManagerImplTest {
+
+    @BeforeClass
+    public void buildUp(){
+        Contact contacts = new ContactImpl();
+    }
 
     @Test
     void addFutureMeetingTest() {
@@ -62,6 +73,11 @@ class ContactManagerImplTest {
 
     @Test
     void flushTest() {
+
+    }
+
+    @AfterClass
+    public void cleanUp(){
 
     }
 

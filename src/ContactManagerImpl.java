@@ -6,53 +6,57 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
-public class ContactManagerImpl {
+public class ContactManagerImpl implements ContactManager{
 
-    int addFutureMeeting(Set<Contact> contacts, Calendar date){
+    public int addFutureMeeting(Set<Contact> contacts, Calendar date){
         return 0;
     }
 
-    PastMeeting getPastMeeting(int id){
+    public PastMeeting getPastMeeting(int id){
         return null;
     }
 
-    FutureMeeting getFutureMeeting(int id){
+    public FutureMeeting getFutureMeeting(int id){
         return null;
     }
 
-    List<Meeting> getFutureMeetingList(Contact contact){
+    public Meeting getMeeting(int id){
         return null;
     }
 
-    List<Meeting> getMeetingListOn(Calendar date){
+    public List<Meeting> getFutureMeetingList(Contact contact){
         return null;
     }
 
-    List<PastMeeting> getPastMeetingListFor(Contact contact){
+    public List<Meeting> getMeetingListOn(Calendar date){
         return null;
     }
 
-    int addNewPastMeeting(Set<Contact> contacts, Calendar date, String text){
+    public List<PastMeeting> getPastMeetingListFor(Contact contact){
+        return null;
+    }
+
+    public int addNewPastMeeting(Set<Contact> contacts, Calendar date, String text){
         return 0;
     }
 
-    PastMeeting addMeetingNotes(int id, String text){
+    public PastMeeting addMeetingNotes(int id, String text){
         return null;
     }
 
-    int addNewContact(String name, String notes){
+    public int addNewContact(String name, String notes){
         return 0;
     }
 
-    Set<Contact> getContacts(String name){
+    public Set<Contact> getContacts(String name){
         return null;
     }
 
-    Set<Contact> getContacts(int... ids){
+    public Set<Contact> getContacts(int... ids){
         return null;
     }
 
-    void flush(){
+    public void flush(){
 
     }
 }
