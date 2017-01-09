@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ContactImplTest {
 
-    Contact contacts = new ContactImpl();
+    Contact contacts = new ContactImpl(1, "name", "");
 
     @Test
     void getId() {

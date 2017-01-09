@@ -11,10 +11,6 @@ import java.util.Calendar;
 
 class ContactManagerImplTest {
 
-    @BeforeClass
-    public void buildUp(){
-        Contact contacts = new ContactImpl();
-    }
 
     @Test
     void addFutureMeetingTest() {
@@ -73,11 +69,6 @@ class ContactManagerImplTest {
 
     @Test
     void flushTest() {
-
-    }
-
-    @AfterClass
-    public void cleanUp(){
 
     }
 
