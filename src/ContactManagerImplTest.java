@@ -6,62 +6,62 @@ import org.junit.jupiter.api.Test;
 class ContactManagerImplTest {
 
     @Test
-    void addFutureMeeting() {
+    void addFutureMeetingTest() {
 
     }
 
     @Test
-    void getPastMeeting() {
+    void getPastMeetingTest() {
 
     }
 
     @Test
-    void getFutureMeeting() {
+    void getFutureMeetingTest() {
 
     }
 
     @Test
-    void getFutureMeetingList() {
+    void getFutureMeetingListTest() {
 
     }
 
     @Test
-    void getMeetingListOn() {
+    void getMeetingListOnTest() {
 
     }
 
     @Test
-    void getPastMeetingListFor() {
+    void getPastMeetingListForTest() {
 
     }
 
     @Test
-    void addNewPastMeeting() {
+    void addNewPastMeetingTest() {
 
     }
 
     @Test
-    void addMeetingNotes() {
+    void addMeetingNotesTest() {
 
     }
 
     @Test
-    void addNewContact() {
+    void addNewContactTest() {
 
     }
 
     @Test
-    void getContacts() {
+    void getContacts1Test() {
 
     }
 
     @Test
-    void getContacts1() {
+    void getContacts2Test() {
 
     }
 
     @Test
-    void flush() {
+    void flushTest() {
 
     }
 
