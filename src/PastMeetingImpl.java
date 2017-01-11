@@ -4,7 +4,7 @@ import java.util.Set;
 /**
  * Created by hradev01 on 09-Jan-17.
  */
-public class PastMeetingImpl{
+public class PastMeetingImpl implements PastMeeting {
 
     private int id;
     private Calendar date;
@@ -34,5 +34,20 @@ public class PastMeetingImpl{
 
     public String getNotes(){
         return notes;
+    }
+
+    @Override
+    public int getId() {
+        return 0;
+    }
+
+    @Override
+    public Calendar getDate() {
+        return null;
+    }
+
+    @Override
+    public Set<Contact> getContacts() {
+        return null;
     }
 }
