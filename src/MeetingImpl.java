@@ -6,6 +6,10 @@ import java.util.Set;
  */
 public class MeetingImpl extends MeetingAbstract {
 
+    private int id;
+    private Calendar date;
+    private Set<Contact> contacts;
+
     /**
      *
      * @param id
@@ -14,6 +18,9 @@ public class MeetingImpl extends MeetingAbstract {
      */
     public MeetingImpl(int id, Calendar date, Set<Contact> contacts) {
         super(id, date, contacts);
+        this.id = id;
+        this.date = date;
+        this.contacts = contacts;
     }
 
     /**
@@ -22,7 +29,7 @@ public class MeetingImpl extends MeetingAbstract {
      */
     @Override
     public int getId(){
-        return 0;
+        return id;
     }
 
     /**
@@ -31,7 +38,7 @@ public class MeetingImpl extends MeetingAbstract {
      */
     @Override
     public Calendar getDate(){
-        return null;
+        return date;
     }
 
     /**
@@ -40,6 +47,6 @@ public class MeetingImpl extends MeetingAbstract {
      */
     @Override
     public Set<Contact> getContacts(){
-        return null;
+        return contacts;
     }
 }
