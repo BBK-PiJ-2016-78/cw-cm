@@ -4,7 +4,7 @@ import java.util.Set;
 /**
  * Created by hradev01 on 09-Jan-17.
  */
-public class PastMeetingImpl {
+public class PastMeetingImpl{
 
     private int id;
     private Calendar date;
@@ -33,6 +33,6 @@ public class PastMeetingImpl {
     }
 
     public String getNotes(){
-        return null;
+        return notes;
     }
 }

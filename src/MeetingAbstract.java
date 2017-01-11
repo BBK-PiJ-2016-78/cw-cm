@@ -4,7 +4,7 @@ import java.util.Set;
 /**
  * Created by hradev01 on 09-Jan-17.
  */
-public abstract class MeetingImpl implements Meeting {
+public abstract class MeetingAbstract implements Meeting {
 
     private int id;
     private Calendar date;
@@ -18,7 +18,7 @@ public abstract class MeetingImpl implements Meeting {
      * @throws IllegalArgumentException when id <=0 or contacts is empty
      * @throws NullPointerException when either date or contacts are null
      */
-    public MeetingImpl(int id, Calendar date, Set<Contact> contacts)
+    public MeetingAbstract(int id, Calendar date, Set<Contact> contacts)
                        throws IllegalArgumentException, NullPointerException {
         this.id = id;
         this.date = date;

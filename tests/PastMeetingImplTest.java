@@ -12,7 +12,7 @@ class PastMeetingImplTest {
     @Test
     void getNotesTest() {
         Calendar date = new GregorianCalendar(2017, 01, 10);
-        Set<Contact> contacts = new TreeSet<Contact>();
+        Set<Contact> contacts = new HashSet<>();
         Contact contact = new ContactImpl(1, "name", "");
         contacts.add(contact);
         PastMeeting meet = (PastMeeting) new PastMeetingImpl(1, date, contacts, "");
