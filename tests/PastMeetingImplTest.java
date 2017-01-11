@@ -15,7 +15,7 @@ class PastMeetingImplTest {
         Set<Contact> contacts = new HashSet<>();
         Contact contact = new ContactImpl(1, "name", "");
         contacts.add(contact);
-        PastMeeting meet = (PastMeeting) new PastMeetingImpl(1, date, contacts, "");
+        PastMeeting meet = (PastMeeting) new PastMeetingImpl(1, date, contacts);
 
         String output = meet.getNotes();
         String expected = "";
