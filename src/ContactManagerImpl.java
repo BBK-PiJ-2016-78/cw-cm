@@ -2,14 +2,35 @@
  * Created by hradev01 on 09-Jan-17.
  */
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
 
-public class ContactManagerImpl implements ContactManager{
+import java.util.*;
 
-    public int addFutureMeeting(Set<Contact> contacts, Calendar date){
-        return 1;
+public class ContactManagerImpl implements ContactManager {
+
+    private int id = 0;
+    private List<Meeting> futureMeetings = new ArrayList<>();
+
+    public ContactManagerImpl() {}
+
+    public int addFutureMeeting(Set<Contact> contacts, Calendar date)
+            throws IllegalArgumentException, NullPointerException {
+
+        if(date != null && futureMeetings != null) {
+            if(!date.before(Calendar.getInstance()) && !contacts.contains(null)) {
+                id = futureMeetings.size();
+                id++;
+                Meeting futureMeeting = new MeetingImpl(id, date, contacts);
+                futureMeetings.add(futureMeeting);
+            } else {
+                throw new IllegalArgumentException("Added date is in the past or contact doesn't exist!");
+            }
+        } else {
+            throw new NullPointerException("Meeting or date are null!");
+        }
+        if (id <= 0)
+            throw new IllegalArgumentException("Meeting failed to be added!");
+
+        return id;
     }
 
     public PastMeeting getPastMeeting(int id){
