@@ -6,7 +6,7 @@ import java.util.Set;
  */
 public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
 
-    private String notes = "";
+    private String notes;
 
     /**
      *
@@ -14,8 +14,11 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
      * @param date
      * @param contacts
      */
-    public PastMeetingImpl(int id, Calendar date, Set<Contact> contacts) {
+    public PastMeetingImpl(int id, Calendar date, Set<Contact> contacts, String notes) throws NullPointerException {
         super(id, date, contacts);
+        this.notes = notes;
+        if (notes == null)
+            throw new NullPointerException("No notes provided");
     }
 
     /**

@@ -6,6 +6,10 @@ import java.util.Set;
  */
 public class FutureMeetingImpl extends MeetingImpl implements FutureMeeting {
 
+    private int id;
+    private Calendar date;
+    private Set<Contact> contacts;
+
     /**
      *
      * @param id
@@ -14,5 +18,8 @@ public class FutureMeetingImpl extends MeetingImpl implements FutureMeeting {
      */
     public FutureMeetingImpl(int id, Calendar date, Set<Contact> contacts) {
         super(id, date, contacts);
+        this.id = id;
+        this.date = date;
+        this.contacts = contacts;
     }
 }
