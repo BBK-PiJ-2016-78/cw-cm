@@ -13,6 +13,8 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
      * @param id
      * @param date
      * @param contacts
+     * @param notes
+     * @throws NullPointerException
      */
     public PastMeetingImpl(int id, Calendar date, Set<Contact> contacts, String notes) throws NullPointerException {
         super(id, date, contacts);
