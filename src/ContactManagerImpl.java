@@ -9,7 +9,7 @@ import java.util.Set;
 public class ContactManagerImpl implements ContactManager{
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date){
-        return 0;
+        return 1;
     }
 
     public PastMeeting getPastMeeting(int id){
