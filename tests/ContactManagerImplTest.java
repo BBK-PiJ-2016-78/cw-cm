@@ -45,11 +45,23 @@ class ContactManagerImplTest {
         contacts.add(contact);
         contacts.add(contact2);
         try {
+            ContactManager manager = new ContactManagerImpl();
+            manager.addFutureMeeting(contacts, null);
+            fail("Expected NullPointerException");
+
+        } catch (NullPointerException ex) {}
+
+    }
+
+    @Test
+    void addFutureMeetingNullTest() {
+        contacts.add(contact);
+        contacts.add(contact2);
+        try {
             Calendar pastDate = new GregorianCalendar(2017, 00, 10);
             ContactManager manager = new ContactManagerImpl();
             manager.addFutureMeeting(contacts, pastDate);
             fail("Expected IllegalArgumentException");
-
         } catch (IllegalArgumentException ex) {}
 
     }
