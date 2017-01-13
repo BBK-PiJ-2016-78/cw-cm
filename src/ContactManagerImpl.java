@@ -10,6 +10,7 @@ public class ContactManagerImpl implements ContactManager {
     private int id = 0;
     private List<Meeting> futureMeetingList = new ArrayList<>();
     private List<Meeting> pastMeetingList = new ArrayList<>();
+    private Set<Contact> contactSet = new HashSet<>();
 
     public ContactManagerImpl() {}
 
@@ -79,11 +80,15 @@ public class ContactManagerImpl implements ContactManager {
         return null;
     }
 
-    public int addNewContact(String name, String notes){
+    public int addNewContact(String name, String notes)
+            throws IllegalArgumentException, NullPointerException {
 
         if(name != null && notes != null) {
             if(name.length() != 0 && notes.length() != 0) {
-
+                id = contactSet.size();
+                id++;
+                Contact contact = new ContactImpl(id, name, notes);
+                contactSet.add(contact);
             } else {
                 throw new IllegalArgumentException("Name or notes are empty!");
             }
@@ -91,7 +96,7 @@ public class ContactManagerImpl implements ContactManager {
         } else {
             throw new NullPointerException("Name or notes are null!");
         }
-        return 2;
+        return id;
     }
 
     public Set<Contact> getContacts(String name){
