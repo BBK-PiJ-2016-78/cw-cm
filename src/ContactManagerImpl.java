@@ -8,27 +8,26 @@ import java.util.*;
 public class ContactManagerImpl implements ContactManager {
 
     private int id = 0;
-    private List<Meeting> futureMeetings = new ArrayList<>();
+    private List<Meeting> futureMeetingList = new ArrayList<>();
+    private List<Meeting> pastMeetingList = new ArrayList<>();
 
     public ContactManagerImpl() {}
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date)
             throws IllegalArgumentException, NullPointerException {
 
-        if(date != null && futureMeetings != null) {
+        if(date != null && futureMeetingList != null) {
             if(!date.before(Calendar.getInstance()) && !contacts.contains(null)) {
-                id = futureMeetings.size();
+                id = futureMeetingList.size();
                 id++;
                 Meeting futureMeeting = new MeetingImpl(id, date, contacts);
-                futureMeetings.add(futureMeeting);
+                futureMeetingList.add(futureMeeting);
             } else {
                 throw new IllegalArgumentException("Added date is in the past or contact doesn't exist!");
             }
         } else {
             throw new NullPointerException("Meeting or date are null!");
         }
-        if (id <= 0)
-            throw new IllegalArgumentException("Meeting failed to be added!");
 
         return id;
     }
@@ -57,8 +56,23 @@ public class ContactManagerImpl implements ContactManager {
         return null;
     }
 
-    public int addNewPastMeeting(Set<Contact> contacts, Calendar date, String text){
-        return 0;
+    public int addNewPastMeeting(Set<Contact> contacts, Calendar date, String text)
+            throws IllegalArgumentException, NullPointerException {
+
+        if(date != null && contacts != null && text != null) {
+            if(date.before(Calendar.getInstance()) && !contacts.contains(null) && contacts.size() != 0) {
+                id = pastMeetingList.size();
+                id++;
+                Meeting pastMeeting = new PastMeetingImpl(id, date, contacts, text);
+                pastMeetingList.add(pastMeeting);
+            } else {
+                throw new IllegalArgumentException("Added date is in the future or contact doesn't exist!");
+            }
+        } else {
+            throw new NullPointerException("Meeting or date are null!");
+        }
+
+        return id;
     }
 
     public PastMeeting addMeetingNotes(int id, String text){

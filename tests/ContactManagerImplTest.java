@@ -12,16 +12,17 @@ import java.util.*;
 
 class ContactManagerImplTest {
 
-    Calendar date = new GregorianCalendar(2017, 00, 14);
-    Set<Contact> contacts = new HashSet<>();
-    Contact contact = new ContactImpl(1, "harry", "stuff");
-    Contact contact2 = new ContactImpl(2, "larry", "some notes");
+    private Calendar date = Calendar.getInstance(); // Get the current date
+    private Set<Contact> contacts = new HashSet<>();
+    private Contact contact = new ContactImpl(1, "harry", "stuff");
+    private Contact contact2 = new ContactImpl(2, "larry", "some notes");
+    private ContactManager manager = new ContactManagerImpl();
 
     @Test
     void addFutureMeetingTest() {
         contacts.add(contact);
         contacts.add(contact2);
-        ContactManager manager = new ContactManagerImpl();
+        date.add(Calendar.DATE, 5); // Add 5 days to the current date
         manager.addFutureMeeting(contacts, date);
         int output = manager.addFutureMeeting(contacts, date);
         int expected = 2;
@@ -32,8 +33,8 @@ class ContactManagerImplTest {
     void addFutureMeetingIllegalArgument() {
         contacts.add(contact);
         contacts.add(null);
+        date.add(Calendar.DATE, 5);
         try {
-            ContactManager manager = new ContactManagerImpl();
             manager.addFutureMeeting(contacts, date);
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException ex) {}
@@ -44,10 +45,9 @@ class ContactManagerImplTest {
     void addFutureMeetingIllegalArgument2() {
         contacts.add(contact);
         contacts.add(contact2);
+        date.add(Calendar.DATE, -5); // Subtract 5 days from the current date
         try {
-            Calendar pastDate = new GregorianCalendar(2017, 00, 10);
-            ContactManager manager = new ContactManagerImpl();
-            manager.addFutureMeeting(contacts, pastDate);
+            manager.addFutureMeeting(contacts, date);
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException ex) {}
 
@@ -58,7 +58,6 @@ class ContactManagerImplTest {
         contacts.add(contact);
         contacts.add(contact2);
         try {
-            ContactManager manager = new ContactManagerImpl();
             manager.addFutureMeeting(contacts, null);
             fail("Expected NullPointerException");
 
@@ -95,7 +94,7 @@ class ContactManagerImplTest {
     void addNewPastMeetingTest() {
         contacts.add(contact);
         contacts.add(contact2);
-        ContactManager manager = new ContactManagerImpl();
+        date.add(Calendar.DATE, -5); // Subtract 5 days from the current date
         manager.addNewPastMeeting(contacts, date, "past meeting");
         int output = manager.addNewPastMeeting(contacts, date, "past meeting");
         int expected = 2;
@@ -106,8 +105,8 @@ class ContactManagerImplTest {
     void addNewPastMeetingIllegalArgument() {
         contacts.add(contact);
         contacts.add(null);
+        date.add(Calendar.DATE, -5);
         try {
-            ContactManager manager = new ContactManagerImpl();
             manager.addNewPastMeeting(contacts, date, "past meeting");
             fail("Expected IllegalArgumentException");
         } catch (IllegalArgumentException ex) {}
@@ -118,10 +117,10 @@ class ContactManagerImplTest {
     void addNewPastMeetingIllegalArgument2() {
         contacts.add(contact);
         contacts.add(contact2);
+        date.add(Calendar.DATE, 5); // Add 5 days in future
         try {
-            ContactManager manager = new ContactManagerImpl();
-            Calendar futureDate = new GregorianCalendar(2017, 00, 15);
-            manager.addNewPastMeeting(contacts, futureDate, "past meeting");
+
+            manager.addNewPastMeeting(contacts, date, "past meeting");
             fail("Expected IllegalArgumentException");
 
         } catch (IllegalArgumentException ex) {}
@@ -129,9 +128,9 @@ class ContactManagerImplTest {
     }
 
     @Test
-    void addNewPastMeetingIllegalArgument3() {
+    void addNewPastMeetingIllegalArgument3() { // Testing for empty contacts
+        date.add(Calendar.DATE, -5);
         try {
-            ContactManager manager = new ContactManagerImpl();
             manager.addNewPastMeeting(contacts, date, "past meeting");
             fail("Expected IllegalArgumentException");
 
@@ -141,9 +140,9 @@ class ContactManagerImplTest {
 
     @Test
     void addNewPastMeetingNullTest() {
+        date.add(Calendar.DATE, -5);
         try {
-            ContactManager manager = new ContactManagerImpl();
-            manager.addFutureMeeting(null, date);
+            manager.addNewPastMeeting(null, date, "some notes");
             fail("Expected NullPointerException");
         } catch (NullPointerException ex) {}
 
