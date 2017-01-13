@@ -80,7 +80,18 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public int addNewContact(String name, String notes){
-        return 0;
+
+        if(name != null && notes != null) {
+            if(name.length() != 0 && notes.length() != 0) {
+
+            } else {
+                throw new IllegalArgumentException("Name or notes are empty!");
+            }
+
+        } else {
+            throw new NullPointerException("Name or notes are null!");
+        }
+        return 2;
     }
 
     public Set<Contact> getContacts(String name){
