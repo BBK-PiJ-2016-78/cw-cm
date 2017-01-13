@@ -24,8 +24,9 @@ class ContactManagerImplTest {
         contacts.add(contact2);
         date.add(Calendar.DATE, 5); // Add 5 days to the current date
         manager.addFutureMeeting(contacts, date);
+        manager.addFutureMeeting(contacts, date);
         int output = manager.addFutureMeeting(contacts, date);
-        int expected = 2;
+        int expected = 5;
         assertEquals(expected, output);
     }
 
@@ -91,13 +92,27 @@ class ContactManagerImplTest {
     }
 
     @Test
+    void getMeetingTest() {
+        contacts.add(contact);
+        contacts.add(contact2);
+        date.add(Calendar.DATE, 5);
+        int futureMeeting = manager.addFutureMeeting(contacts, date);
+        date.add(Calendar.DATE, -5);
+        int pastMeeting = manager.addNewPastMeeting(contacts, date, "past meeting");
+        Meeting output = manager.getMeeting(futureMeeting);
+        Meeting expected = new FutureMeetingImpl(1, date, contacts);
+        assertEquals(expected, output);
+    }
+
+    @Test
     void addNewPastMeetingTest() {
         contacts.add(contact);
         contacts.add(contact2);
         date.add(Calendar.DATE, -5); // Subtract 5 days from the current date
         manager.addNewPastMeeting(contacts, date, "past meeting");
+        manager.addNewPastMeeting(contacts, date, "past meeting");
         int output = manager.addNewPastMeeting(contacts, date, "past meeting");
-        int expected = 2;
+        int expected = 6;
         assertEquals(expected, output);
     }
 

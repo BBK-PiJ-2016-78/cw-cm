@@ -19,8 +19,16 @@ public class ContactManagerImpl implements ContactManager {
 
         if(date != null && futureMeetingList != null) {
             if(!date.before(Calendar.getInstance()) && !contacts.contains(null)) {
-                id = futureMeetingList.size();
-                id++;
+                int size = futureMeetingList.size();
+                if(size == 0) {
+                    id++;
+                } else if(futureMeetingList.get(size - 1).getId() % 2 == 0) { // IDs for futureMeetings are odd
+                    id = futureMeetingList.get(size - 1).getId();
+                    id++;
+                } else {
+                    id = futureMeetingList.get(size - 1).getId();
+                    id += 2;
+                }
                 Meeting futureMeeting = new MeetingImpl(id, date, contacts);
                 futureMeetingList.add(futureMeeting);
             } else {
@@ -62,8 +70,16 @@ public class ContactManagerImpl implements ContactManager {
 
         if(date != null && contacts != null && text != null) {
             if(date.before(Calendar.getInstance()) && !contacts.contains(null) && contacts.size() != 0) {
-                id = pastMeetingList.size();
-                id++;
+                int size = pastMeetingList.size();
+                if(size == 0) {
+                    id = 2;
+                } else if(pastMeetingList.get(size - 1).getId() % 2 == 1) { // IDs for pastMeetings are even
+                    id = pastMeetingList.get(size - 1).getId();
+                    id++;
+                } else {
+                    id = pastMeetingList.get(size - 1).getId();
+                    id += 2;
+                }
                 Meeting pastMeeting = new PastMeetingImpl(id, date, contacts, text);
                 pastMeetingList.add(pastMeeting);
             } else {
