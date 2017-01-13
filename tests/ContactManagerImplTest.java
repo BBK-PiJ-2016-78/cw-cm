@@ -155,7 +155,32 @@ class ContactManagerImplTest {
 
     @Test
     void addNewContactTest() {
+        String name = "Javarenkov";
+        String notes = "cool guy";
+        manager.addNewContact(name, notes);
+        int output = manager.addNewContact(name, notes);
+        int expected = 2;
+        assertEquals(expected, output);
+    }
 
+    @Test
+    void addNewContactIllegalArgument() {
+        String name = "";
+        String notes = "cool guy";
+        try {
+            manager.addNewContact(name, notes);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException ex) {}
+
+    }
+
+    @Test
+    void addNewContactNullTest() {
+        String name = "Javarenkov";
+        try {
+            manager.addNewContact(name, null);
+            fail("Expected NullPointerException");
+        } catch (NullPointerException ex) {}
     }
 
     @Test

@@ -19,7 +19,7 @@ public interface ContactManager {
      *       in the past, of if any contact is unknown / non-existent.
      * @throws NullPointerException if the meeting or the date are null
     */
-    int addFutureMeeting(Set<Contact> contacts, Calendar date); // done
+    int addFutureMeeting(Set<Contact> contacts, Calendar date);
 
     /**
      * Returns the PAST meeting with the requested ID, or null if it there is none.
