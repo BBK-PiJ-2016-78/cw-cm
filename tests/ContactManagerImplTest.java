@@ -99,9 +99,9 @@ class ContactManagerImplTest {
         int futureMeeting = manager.addFutureMeeting(contacts, date);
         date.add(Calendar.DATE, -5);
         int pastMeeting = manager.addNewPastMeeting(contacts, date, "past meeting");
-        Meeting output = manager.getMeeting(futureMeeting);
-        Meeting expected = new FutureMeetingImpl(1, date, contacts);
-        assertEquals(expected, output);
+        Meeting output = manager.getMeeting(futureMeeting); // pastMeeting can be used too
+        Meeting expected = new MeetingImpl(1, date, contacts); // change 2 for pastMeeting
+        assertEquals(expected.getId(), output.getId());
     }
 
     @Test

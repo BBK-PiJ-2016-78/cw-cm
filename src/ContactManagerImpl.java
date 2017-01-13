@@ -50,6 +50,17 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public Meeting getMeeting(int id){
+
+        if(id > 0) {
+            for (Meeting count : futureMeetingList) {
+                if(count.getId() == id)
+                    return count;
+            }
+            for (Meeting count: pastMeetingList) {
+                if(count.getId() == id)
+                    return count;
+            }
+        }
         return null;
     }
 
