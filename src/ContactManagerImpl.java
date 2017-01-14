@@ -29,7 +29,7 @@ public class ContactManagerImpl implements ContactManager {
                     id = futureMeetingList.get(size - 1).getId();
                     id += 2;
                 }
-                Meeting futureMeeting = new MeetingImpl(id, date, contacts);
+                Meeting futureMeeting = new FutureMeetingImpl(id, date, contacts);
                 futureMeetingList.add(futureMeeting);
             } else {
                 throw new IllegalArgumentException("Added date is in the past or contact doesn't exist!");
@@ -55,6 +55,15 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public FutureMeeting getFutureMeeting(int id){
+
+        for(Meeting count : futureMeetingList)
+            if(count.getId() == id)
+                return (FutureMeeting) count;
+
+        for(Meeting count : pastMeetingList)
+            if(count.getId() == id)
+                throw new IllegalStateException("This is a past meeting!");
+
         return null;
     }
 

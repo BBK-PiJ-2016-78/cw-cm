@@ -96,7 +96,7 @@ class ContactManagerImplTest {
         date.add(Calendar.DATE, 5);
         int futureMeeting = manager.addFutureMeeting(contacts, date);
         FutureMeeting output = manager.getFutureMeeting(futureMeeting);
-        FutureMeeting expected = new FutureMeetingImpl(2, date, contacts);
+        FutureMeeting expected = new FutureMeetingImpl(1, date, contacts);
         assertEquals(expected.getId(), output.getId());
     }
 
