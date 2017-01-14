@@ -274,9 +274,9 @@ class ContactManagerImplTest {
 
     @Test
     void getContacts1Test() {
-        contacts.add(contact);
-        contacts.add(contact2);
-        contacts.add(contact2);
+        manager.addNewContact("larry", "some notes");
+        manager.addNewContact("larry", "some notes");
+        manager.addNewContact("harry", "some notes");
 
         Set<Contact> output = manager.getContacts("larry");
 
@@ -284,7 +284,23 @@ class ContactManagerImplTest {
         expected.add(contact2);
         expected.add(contact2);
 
-        assertEquals(expected, output);
+        assertEquals(expected.contains(contact2.getName()), output.contains(contact2.getName()));
+        assertEquals(2, output.size());
+    }
+
+    @Test
+    void getContacts1GetAll() {
+        manager.addNewContact("larry", "some notes");
+        manager.addNewContact("larry", "some notes");
+        manager.addNewContact("harry", "some notes");
+        contacts.add(contact);
+        contacts.add(contact2);
+        contacts.add(contact2);
+
+        Set<Contact> output = manager.getContacts("");
+        Set<Contact> expected = contacts;
+        assertEquals(expected.contains(contact.getName()), output.contains(contact.getName()));
+        assertEquals(3, output.size());
     }
 
     @Test

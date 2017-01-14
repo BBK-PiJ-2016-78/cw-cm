@@ -176,7 +176,21 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public Set<Contact> getContacts(String name){
-        return null;
+
+        Set<Contact> newSet = new HashSet<>();
+
+        if(name == null) {
+            throw new NullPointerException("No name specified");
+        } else if(name.equals("")) {
+            return contactSet;
+        } else {
+            for (Contact count : contactSet) {
+                if (count.getName().equals(name)) {
+                    newSet.add(count);
+                }
+            }
+        }
+        return newSet;
     }
 
     public Set<Contact> getContacts(int... ids){
