@@ -73,7 +73,7 @@ class ContactManagerImplTest {
         date.add(Calendar.DATE, -5);
         int pastMeeting = manager.addNewPastMeeting(contacts, date, "past meeting");
         PastMeeting output = manager.getPastMeeting(pastMeeting);
-        PastMeeting expected = new PastMeetingImpl(1, date, contacts, "some notes");
+        PastMeeting expected = new PastMeetingImpl(2, date, contacts, "some notes");
         assertEquals(expected.getId(), output.getId());
     }
 

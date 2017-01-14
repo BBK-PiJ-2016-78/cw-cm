@@ -42,6 +42,15 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public PastMeeting getPastMeeting(int id){
+
+        for(Meeting count : pastMeetingList)
+            if(count.getId() == id)
+                return (PastMeeting) count;
+
+        for(Meeting count : futureMeetingList)
+            if(count.getId() == id)
+                throw new IllegalStateException("This is a future planned meeting!");
+
         return null;
     }
 
