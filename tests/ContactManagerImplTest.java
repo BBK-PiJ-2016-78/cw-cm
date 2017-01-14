@@ -68,7 +68,25 @@ class ContactManagerImplTest {
 
     @Test
     void getPastMeetingTest() {
+        contacts.add(contact);
+        contacts.add(contact2);
+        date.add(Calendar.DATE, -5);
+        int pastMeeting = manager.addNewPastMeeting(contacts, date, "past meeting");
+        PastMeeting output = manager.getPastMeeting(pastMeeting);
+        PastMeeting expected = new PastMeetingImpl(1, date, contacts, "some notes");
+        assertEquals(expected.getId(), output.getId());
+    }
 
+    @Test
+    void getPastMeetingIllegalState() {
+        contacts.add(contact);
+        contacts.add(contact2);
+        date.add(Calendar.DATE, 5);
+        int futureMeeting = manager.addFutureMeeting(contacts, date);
+        try {
+            manager.getPastMeeting(futureMeeting);
+            fail("Expected IllegalStateEsception");
+        } catch (IllegalStateException ex) {}
     }
 
     @Test
