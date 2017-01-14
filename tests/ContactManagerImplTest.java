@@ -305,7 +305,19 @@ class ContactManagerImplTest {
 
     @Test
     void getContacts2Test() {
+        manager.addNewContact("larry", "some notes");
+        manager.addNewContact("larry", "some notes");
+        manager.addNewContact("harry", "some notes");
 
+        Set<Contact> output = manager.getContacts(1, 2, 3);
+
+        Set<Contact> expected = new HashSet<>();
+        expected.add(contact2);
+        expected.add(contact2);
+        expected.add(contact);
+
+        assertEquals(expected.contains(contact2.getId()), output.contains(contact2.getId()));
+        assertEquals(3, output.size());
     }
 
     @Test
