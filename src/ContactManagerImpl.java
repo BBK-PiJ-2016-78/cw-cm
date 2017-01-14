@@ -43,26 +43,33 @@ public class ContactManagerImpl implements ContactManager {
 
     public PastMeeting getPastMeeting(int id){
 
-        for(Meeting count : pastMeetingList)
-            if(count.getId() == id)
+        for(Meeting count : pastMeetingList) {
+            if (count.getId() == id)
                 return (PastMeeting) count;
+        }
 
-        for(Meeting count : futureMeetingList)
-            if(count.getId() == id)
+        for(Meeting count : futureMeetingList) {
+            if (count.getId() == id && !count.getDate().before(Calendar.getInstance()))
                 throw new IllegalStateException("This is a future planned meeting!");
-
+            else {
+                pastMeetingList.add(count);
+                return (PastMeeting) count;
+            }
+        }
         return null;
     }
 
     public FutureMeeting getFutureMeeting(int id){
 
-        for(Meeting count : futureMeetingList)
+        for(Meeting count : futureMeetingList) {
             if(count.getId() == id)
                 return (FutureMeeting) count;
+        }
 
-        for(Meeting count : pastMeetingList)
+        for(Meeting count : pastMeetingList) {
             if(count.getId() == id)
                 throw new IllegalStateException("This is a past meeting!");
+        }
 
         return null;
     }
@@ -121,8 +128,32 @@ public class ContactManagerImpl implements ContactManager {
         return id;
     }
 
-    public PastMeeting addMeetingNotes(int id, String text){
-        return null;
+    public PastMeeting addMeetingNotes(int id, String text) {
+
+        for(Meeting count : futureMeetingList) {
+            if(count.getDate().before(Calendar.getInstance())) { // If any of the future meetings already occurred add it to past list
+                pastMeetingList.add(count);
+            }
+        }
+        PastMeeting past = getPastMeeting(id);
+        PastMeeting addedNotes;
+
+        if(past == null)
+            throw new IllegalArgumentException("Meeting does not exist!");
+        else {
+            int index = pastMeetingList.indexOf(past);
+            int newId = past.getId();
+            Calendar newDate = past.getDate();
+            Set<Contact> newContacts = past.getContacts();
+            if(text == null)
+                throw new NullPointerException("No notes added!");
+            else {
+                pastMeetingList.remove(index);
+                addedNotes = new PastMeetingImpl(newId, newDate, newContacts, text);
+                pastMeetingList.add(index, addedNotes);
+                return addedNotes;
+            }
+        }
     }
 
     public int addNewContact(String name, String notes)

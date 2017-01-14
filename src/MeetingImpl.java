@@ -49,4 +49,5 @@ public class MeetingImpl extends MeetingAbstract {
     public Set<Contact> getContacts(){
         return contacts;
     }
+
 }

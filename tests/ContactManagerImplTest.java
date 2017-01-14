@@ -232,6 +232,10 @@ class ContactManagerImplTest {
 
     @Test
     void addMeetingNotesNullException() {
+        contacts.add(contact);
+        contacts.add(contact2);
+        date.add(Calendar.DATE, -5);
+        manager.addNewPastMeeting(contacts, date, "past meeting");
         try {
             manager.addMeetingNotes(2, null);
             fail("Expected NullPointerException");
