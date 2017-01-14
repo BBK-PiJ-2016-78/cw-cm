@@ -201,7 +201,41 @@ class ContactManagerImplTest {
 
     @Test
     void addMeetingNotesTest() {
+        contacts.add(contact);
+        contacts.add(contact2);
+        date.add(Calendar.DATE, -5);
+        manager.addNewPastMeeting(contacts, date, "past meeting");
+        PastMeeting output = manager.addMeetingNotes(2, "new notes");
+        PastMeeting expected = manager.getPastMeeting(2);
+        assertEquals(expected.getNotes(), output.getNotes());
+    }
 
+    @Test
+    void addMeetingNotesIllegalArgument() {
+        try {
+            manager.addMeetingNotes(2, "new notes");
+            fail("Expected IllegalArgumentException");
+        } catch(IllegalArgumentException ex) {}
+    }
+
+    @Test
+    void addMeetingNotesIllegalState() {
+        contacts.add(contact);
+        contacts.add(contact2);
+        date.add(Calendar.DATE, 5);
+        manager.addFutureMeeting(contacts, date);
+        try {
+            manager.addMeetingNotes(1, "new notes");
+            fail("Expected IllegalStateException");
+        } catch(IllegalStateException ex) {}
+    }
+
+    @Test
+    void addMeetingNotesNullException() {
+        try {
+            manager.addMeetingNotes(2, null);
+            fail("Expected NullPointerException");
+        } catch(NullPointerException ex) {}
     }
 
     @Test
