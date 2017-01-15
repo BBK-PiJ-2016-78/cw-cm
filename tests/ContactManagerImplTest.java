@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 class ContactManagerImplTest {
@@ -318,6 +316,15 @@ class ContactManagerImplTest {
 
         assertEquals(expected.contains(contact2.getId()), output.contains(contact2.getId()));
         assertEquals(3, output.size());
+    }
+
+    @Test
+    void getContacts2ExceptionTest() {
+        try {
+            manager.getContacts();
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException ex) {}
+
     }
 
     @Test

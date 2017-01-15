@@ -194,7 +194,23 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public Set<Contact> getContacts(int... ids){
-        return null;
+
+        Set<Contact> newSet = new HashSet<>();
+
+        if(id == 0)
+            throw new IllegalArgumentException("ID can't be 0");
+        else {
+            for(Contact count : contactSet) {
+                for(int id : ids) {
+                    if (count.getId() == id)
+                        newSet.add(count);
+                }
+            }
+        }
+        if(newSet.size() == 0)
+            throw new IllegalArgumentException("No contacts found with this ID!");
+
+        return newSet;
     }
 
     public void flush(){
