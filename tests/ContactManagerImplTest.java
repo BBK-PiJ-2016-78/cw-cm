@@ -112,7 +112,35 @@ class ContactManagerImplTest {
 
     @Test
     void getFutureMeetingListTest() {
+        contacts.add(contact);
+        date.add(Calendar.DATE, 7);
+        manager.addFutureMeeting(contacts, date);
+        date.add(Calendar.DATE, 5);
+        manager.addFutureMeeting(contacts, date);
 
+        List<Meeting> output = manager.getFutureMeetingList(contact);
+        List<Meeting> expected = new ArrayList<>();
+        date.add(Calendar.DATE, 5);
+        Meeting one = new FutureMeetingImpl(3, date, contacts);
+        date.add(Calendar.DATE, 7);
+        Meeting two = new FutureMeetingImpl(1, date, contacts);
+        expected.add(one);
+        expected.add(two);
+
+        assertEquals(expected.contains(one.getId()), output.contains(one.getId()));
+        assertEquals(2, output.size());
+
+    }
+
+    @Test
+    void getFutureMeetingListNullTest() {
+        contacts.add(contact2);
+        date.add(Calendar.DATE, 7);
+        manager.addFutureMeeting(contacts, date);
+        try {
+            manager.getFutureMeetingList(contact);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException ex) {}
     }
 
     @Test
