@@ -12,6 +12,7 @@ class ContactManagerImplTest {
 
     private Calendar date = Calendar.getInstance(); // Get the current date
     private Set<Contact> contacts = new HashSet<>();
+    private Set<Contact> contacts2 = new HashSet<>();
     private Contact contact = new ContactImpl(1, "harry", "stuff");
     private Contact contact2 = new ContactImpl(2, "larry", "some notes");
     private ContactManager manager = new ContactManagerImpl();
@@ -113,6 +114,12 @@ class ContactManagerImplTest {
     @Test
     void getFutureMeetingListTest() {
         contacts.add(contact);
+        manager.addNewContact("harry", "stuff");
+        contacts2.add(contact2);
+        date.add(Calendar.DATE, 8);
+        manager.addFutureMeeting(contacts2, date);
+        date.add(Calendar.DATE, 7);
+        manager.addFutureMeeting(contacts, date);
         date.add(Calendar.DATE, 7);
         manager.addFutureMeeting(contacts, date);
         date.add(Calendar.DATE, 5);
@@ -121,14 +128,16 @@ class ContactManagerImplTest {
         List<Meeting> output = manager.getFutureMeetingList(contact);
         List<Meeting> expected = new ArrayList<>();
         date.add(Calendar.DATE, 5);
-        Meeting one = new FutureMeetingImpl(3, date, contacts);
+        Meeting one = new FutureMeetingImpl(7, date, contacts);
         date.add(Calendar.DATE, 7);
-        Meeting two = new FutureMeetingImpl(1, date, contacts);
+        Meeting two = new FutureMeetingImpl(3, date, contacts);
         expected.add(one);
         expected.add(two);
 
         assertEquals(expected.contains(one.getId()), output.contains(one.getId()));
-        assertEquals(2, output.size());
+        assertEquals(expected.contains(two.getId()), output.contains(two.getId()));
+        assertEquals(expected.size(), output.size());
+
 
     }
 

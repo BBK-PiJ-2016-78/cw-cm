@@ -4,6 +4,7 @@
 
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ContactManagerImpl implements ContactManager {
 
@@ -90,7 +91,20 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public List<Meeting> getFutureMeetingList(Contact contact){
-        return null;
+
+        if(contact == null) {
+            throw new NullPointerException("The contact does not exist!");
+        //} else if() {
+
+        } else {
+            List<Meeting> streamList = futureMeetingList.stream()
+                    .distinct()
+                    .filter(a -> a.getContacts().contains(contact))
+                    .sorted(Comparator.comparing(Meeting::getDate))
+                    .collect(Collectors.toList());
+
+            return streamList;
+        }
     }
 
     public List<Meeting> getMeetingListOn(Calendar date){
