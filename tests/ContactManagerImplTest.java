@@ -114,8 +114,8 @@ class ContactManagerImplTest {
     @Test
     void getFutureMeetingListTest() {
         contacts.add(contact);
-        manager.addNewContact("harry", "stuff");
         contacts2.add(contact2);
+        manager.addNewContact("harry", "stuff");
         date.add(Calendar.DATE, 8);
         manager.addFutureMeeting(contacts2, date);
         date.add(Calendar.DATE, 7);

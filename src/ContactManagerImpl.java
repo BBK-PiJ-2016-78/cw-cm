@@ -92,11 +92,21 @@ public class ContactManagerImpl implements ContactManager {
 
     public List<Meeting> getFutureMeetingList(Contact contact){
 
+        boolean check = false;
+
         if(contact == null) {
             throw new NullPointerException("The contact does not exist!");
-        //} else if() {
+        }
 
-        } else {
+        List<Contact> contactList = new ArrayList<>(contactSet);
+        for(Contact count : contactList){
+            if(count.getId() == contact.getId() && count.getName().equals(contact.getName())) {
+                check = true;
+            }
+        }
+        if(!check)
+            throw new IllegalArgumentException("Cannot find contact!");
+
             List<Meeting> streamList = futureMeetingList.stream()
                     .filter(a -> a.getContacts().contains(contact))
                     .sorted(Comparator.comparing(Meeting::getDate))
@@ -107,9 +117,7 @@ public class ContactManagerImpl implements ContactManager {
                     streamList.remove(i);
             }
 
-
             return streamList;
-        }
     }
 
     public List<Meeting> getMeetingListOn(Calendar date){
