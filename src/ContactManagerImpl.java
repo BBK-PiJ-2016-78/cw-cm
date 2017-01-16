@@ -121,8 +121,35 @@ public class ContactManagerImpl implements ContactManager {
             return streamList;
     }
 
-    public List<Meeting> getMeetingListOn(Calendar date){
-        return null;
+    public List<Meeting> getMeetingListOn(Calendar date) {
+
+        if(date == null)
+            throw new NullPointerException("Date is null!");
+
+        List<Meeting> allMeetings = new ArrayList<>();
+
+        for(Meeting count : futureMeetingList) {
+            allMeetings.add(count);
+        }
+        for(Meeting count : pastMeetingList) {
+            allMeetings.add(count);
+        }
+
+        List<Meeting> streamList = allMeetings.stream().distinct()
+                .filter(a -> a.getDate().equals(date))
+                .sorted(Comparator.comparing(Meeting::getDate))
+                .collect(Collectors.toList());
+
+        for(int i = 0; i < streamList.size() - 1; i++) {
+            if(streamList.get(i).getDate().compareTo(streamList.get(i + 1).getDate()) == 0
+                    && streamList.get(i).getContacts().containsAll(contactSet)
+                    && (streamList.get(i + 1).getContacts().containsAll(contactSet))); // remove duplicates with same date and contacts
+
+            streamList.remove(i);
+        }
+
+        return streamList;
+
     }
 
     public List<PastMeeting> getPastMeetingListFor(Contact contact){
