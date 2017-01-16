@@ -90,7 +90,8 @@ public class ContactManagerImpl implements ContactManager {
         return null;
     }
 
-    public List<Meeting> getFutureMeetingList(Contact contact){
+    public List<Meeting> getFutureMeetingList(Contact contact)
+            throws NullPointerException, IllegalArgumentException {
 
         boolean check = false;
 

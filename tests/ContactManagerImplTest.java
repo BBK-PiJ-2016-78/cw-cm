@@ -154,7 +154,30 @@ class ContactManagerImplTest {
 
     @Test
     void getMeetingListOnTest() {
+        contacts.add(contact);
+        contacts.add(contact2);
+        date.add(Calendar.DATE, 8);
+        manager.addFutureMeeting(contacts, date);
+        date.add(Calendar.DATE, -10);
+        manager.addNewPastMeeting(contacts, date, "first meeting");
+        date.add(Calendar.DATE, -10);
+        manager.addNewPastMeeting(contacts, date, "second meeting");
 
+        date.add(Calendar.DATE, -5);
+        List<Meeting> output = manager.getMeetingListOn(date);
+        List<Meeting> expected = new ArrayList<>();
+        date.add(Calendar.DATE, -5);
+        PastMeeting one = new PastMeetingImpl(2, date, contacts, "first meeting");
+        expected.add(one);
+        date.add(Calendar.DATE, -5);
+        PastMeeting two = new PastMeetingImpl(4, date, contacts, "second meeting");
+        expected.add(two);
+
+        assertEquals(expected.contains(one.getId()), output.contains(one.getId()));
+        assertEquals(expected.contains(one.getNotes()), output.contains(one.getNotes()));
+        assertEquals(expected.contains(two.getId()), output.contains(two.getId()));
+        assertEquals(expected.contains(two.getNotes()), output.contains(two.getNotes()));
+        assertEquals(expected.size(), output.size());
     }
 
     @Test
