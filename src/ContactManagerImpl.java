@@ -98,10 +98,15 @@ public class ContactManagerImpl implements ContactManager {
 
         } else {
             List<Meeting> streamList = futureMeetingList.stream()
-                    .distinct()
                     .filter(a -> a.getContacts().contains(contact))
                     .sorted(Comparator.comparing(Meeting::getDate))
                     .collect(Collectors.toList());
+
+            for(int i = 0; i < streamList.size() - 1; i++) {
+                if(streamList.get(i).getDate().compareTo(streamList.get(i + 1).getDate()) == 0); // remove duplicates with same date
+                    streamList.remove(i);
+            }
+
 
             return streamList;
         }
