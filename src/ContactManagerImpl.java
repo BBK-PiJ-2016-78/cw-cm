@@ -15,6 +15,15 @@ public class ContactManagerImpl implements ContactManager {
 
     public ContactManagerImpl() {}
 
+
+    /**
+     *
+     * @param contacts a set of contacts that will participate in the meeting
+     * @param date the date on which the meeting will take place
+     * @return the ID
+     * @throws IllegalArgumentException if meeting is in the past or contact doesn't exist
+     * @throws NullPointerException if meeting or date are null
+     */
     public int addFutureMeeting(Set<Contact> contacts, Calendar date)
             throws IllegalArgumentException, NullPointerException {
 
@@ -42,6 +51,13 @@ public class ContactManagerImpl implements ContactManager {
         return id;
     }
 
+
+    /**
+     *
+     * @param id the ID for the meeting
+     * @return PastMeeting with requested ID
+     * @throws IllegalStateException if the meeting with this ID is happening in future
+     */
     public PastMeeting getPastMeeting(int id) throws IllegalStateException {
 
         for(Meeting count : pastMeetingList) {
@@ -60,6 +76,13 @@ public class ContactManagerImpl implements ContactManager {
         return null;
     }
 
+
+    /**
+     *
+     * @param id the ID for the meeting
+     * @return the FutureMeeting for this ID
+     * @throws IllegalStateException if the meeting is happening in the past
+     */
     public FutureMeeting getFutureMeeting(int id) throws IllegalStateException {
 
         for(Meeting count : futureMeetingList) {
@@ -75,6 +98,12 @@ public class ContactManagerImpl implements ContactManager {
         return null;
     }
 
+
+    /**
+     *
+     * @param id the ID for the meeting
+     * @return the Meeting with the requested ID
+     */
     public Meeting getMeeting(int id){
 
         if(id > 0) {
@@ -90,6 +119,14 @@ public class ContactManagerImpl implements ContactManager {
         return null;
     }
 
+
+    /**
+     *
+     * @param contact one of the user’s contacts
+     * @return the list of FutureMeetings with that contact
+     * @throws NullPointerException if contact is null
+     * @throws IllegalArgumentException if contact does not exist
+     */
     public List<Meeting> getFutureMeetingList(Contact contact)
             throws NullPointerException, IllegalArgumentException {
 
@@ -121,6 +158,13 @@ public class ContactManagerImpl implements ContactManager {
             return streamList;
     }
 
+
+    /**
+     *
+     * @param date the date
+     * @return the list of Meetings on that date
+     * @throws NullPointerException if the date is null
+     */
     public List<Meeting> getMeetingListOn(Calendar date)
             throws NullPointerException {
 
@@ -153,6 +197,14 @@ public class ContactManagerImpl implements ContactManager {
 
     }
 
+
+    /**
+     *
+     * @param contact one of the user’s contacts
+     * @return the list of PastMeetings with that contact
+     * @throws IllegalArgumentException if the contact does not exist
+     * @throws NullPointerException if the contact is null
+     */
     public List<PastMeeting> getPastMeetingListFor(Contact contact)
             throws IllegalArgumentException, NullPointerException {
 
@@ -185,6 +237,16 @@ public class ContactManagerImpl implements ContactManager {
         return streamList;
     }
 
+
+    /**
+     *
+     * @param contacts a set of participants
+     * @param date the date on which the meeting took place
+     * @param text messages to be added about the meeting.
+     * @return the ID of the past meeting, it returns even IDs
+     * @throws IllegalArgumentException if the list of contacts is empty or contact does not exist or date in future
+     * @throws NullPointerException if any of the arguments are null
+     */
     public int addNewPastMeeting(Set<Contact> contacts, Calendar date, String text)
             throws IllegalArgumentException, NullPointerException {
 
@@ -212,6 +274,15 @@ public class ContactManagerImpl implements ContactManager {
         return id;
     }
 
+
+    /**
+     *
+     * @param id the ID of the meeting
+     * @param text messages to be added about the meeting.
+     * @return the PastMeeting with notes added
+     * @throws IllegalArgumentException if name or notes are empty strings
+     * @throws NullPointerException if name or notes are null
+     */
     public PastMeeting addMeetingNotes(int id, String text)
             throws IllegalArgumentException, NullPointerException {
 
@@ -241,6 +312,15 @@ public class ContactManagerImpl implements ContactManager {
         }
     }
 
+
+    /**
+     *
+     * @param name the name of the contact.
+     * @param notes notes to be added about the contact.
+     * @return the ID of that contact, integer numbers from 1 to n
+     * @throws IllegalArgumentException if name or notes are empty strings
+     * @throws NullPointerException if name or notes are null
+     */
     public int addNewContact(String name, String notes)
             throws IllegalArgumentException, NullPointerException {
 
@@ -260,6 +340,13 @@ public class ContactManagerImpl implements ContactManager {
         return id;
     }
 
+
+    /**
+     *
+     * @param name the string to search for
+     * @return the set of contacts whose name contains that string
+     * @throws NullPointerException if the name provided is null
+     */
     public Set<Contact> getContacts(String name)
             throws NullPointerException {
 
@@ -279,6 +366,13 @@ public class ContactManagerImpl implements ContactManager {
         return newSet;
     }
 
+
+    /**
+     *
+     * @param ids an arbitrary number of contact IDs
+     * @return the set of contacts with the provided IDs
+     * @throws IllegalArgumentException if no IDs provided or the don't correspond to any contacts
+     */
     public Set<Contact> getContacts(int... ids)
             throws IllegalArgumentException {
 
