@@ -129,15 +129,9 @@ class ContactManagerImplTest {
         manager.addFutureMeeting(contacts, testDate2);
 
         List<Meeting> output = manager.getFutureMeetingList(contact);
-        List<Meeting> expected = new ArrayList<>();
-        Meeting one = new FutureMeetingImpl(5, testDate1, contacts);
-        Meeting two = new FutureMeetingImpl(7, testDate2, contacts);
-        expected.add(one);
-        expected.add(two);
 
-        Assert.assertThat(output.contains(one.getId()), is(expected.contains(one.getId())));
-        Assert.assertThat(output.contains(one.getDate()), is(expected.contains(one.getDate())));
-        assertEquals(expected.size(), output.size());
+        assertEquals(5, output.get(0).getId());
+        assertEquals(2, output.size());
 
 
     }
@@ -157,27 +151,21 @@ class ContactManagerImplTest {
     void getMeetingListOnTest() {
         contacts.add(contact);
         contacts.add(contact2);
-        date.add(Calendar.DATE, 8);
+        Calendar testDate1 = Calendar.getInstance();
+        Calendar testDate2 = Calendar.getInstance();
+        date.add(Calendar.DATE, 1);
         manager.addFutureMeeting(contacts, date); // one meeting in future
         manager.addFutureMeeting(contacts, date); // another meeting in future (duplicate)
-        date.add(Calendar.DATE, -9);
-        manager.addNewPastMeeting(contacts, date, "some meeting");
-        date.add(Calendar.DATE, -5);
-        manager.addNewPastMeeting(contacts, date, "first meeting"); // two meetings in past on same date (duplicates)
-        manager.addNewPastMeeting(contacts, date, "second meeting");
+        testDate1.add(Calendar.DATE, -1);
+        manager.addNewPastMeeting(contacts, testDate1, "some meeting");
+        testDate2.add(Calendar.DATE, -2);
+        manager.addNewPastMeeting(contacts, testDate2, "first meeting"); // two meetings in past on same date (duplicates)
+        manager.addNewPastMeeting(contacts, testDate2, "second meeting");
 
-        List<Meeting> output = manager.getMeetingListOn(date);
-        List<Meeting> expected = new ArrayList<>();
-        PastMeeting one = new PastMeetingImpl(4, date, contacts, "first meeting");
-        expected.add(one);
-        PastMeeting two = new PastMeetingImpl(6, date, contacts, "second meeting");
-        expected.add(two);
+        List<Meeting> output = manager.getMeetingListOn(testDate2);
 
-        assertEquals(expected.contains(one.getId()), output.contains(one.getId()));
-        assertEquals(expected.contains(one.getNotes()), output.contains(one.getNotes()));
-        assertEquals(expected.contains(two.getId()), output.contains(two.getId()));
-        assertEquals(expected.contains(two.getNotes()), output.contains(two.getNotes()));
-        assertEquals(3, output.size());
+        assertEquals(6, output.get(0).getId());
+        assertEquals(1, output.size());
     }
 
     @Test
@@ -185,28 +173,21 @@ class ContactManagerImplTest {
 
         contacts.add(contact);
         contacts2.add(contact2);
+        Calendar testDate1 = Calendar.getInstance();
+        Calendar testDate2 = Calendar.getInstance();
         manager.addNewContact("harry", "stuff");
-        date.add(Calendar.DATE, 8);
-        manager.addFutureMeeting(contacts2, date);
-        date.add(Calendar.DATE, 7);
-        manager.addFutureMeeting(contacts, date);
-        date.add(Calendar.DATE, 7);
-        manager.addFutureMeeting(contacts, date);
-        date.add(Calendar.DATE, 5);
-        manager.addFutureMeeting(contacts, date);
+        testDate1.add(Calendar.DATE, -1);
+        manager.addNewPastMeeting(contacts2, testDate1, "another past meeting");
+        manager.addNewPastMeeting(contacts, testDate1, "first meeting");
+        manager.addNewPastMeeting(contacts, testDate1, "duplicate");
+        testDate2.add(Calendar.DATE, -2);
+        manager.addNewPastMeeting(contacts, testDate2, "second meeting");
 
-        List<Meeting> output = manager.getFutureMeetingList(contact);
-        List<Meeting> expected = new ArrayList<>();
-        date.add(Calendar.DATE, 5);
-        Meeting one = new FutureMeetingImpl(7, date, contacts);
-        date.add(Calendar.DATE, 7);
-        Meeting two = new FutureMeetingImpl(3, date, contacts);
-        expected.add(one);
-        expected.add(two);
+        List<PastMeeting> output = manager.getPastMeetingListFor(contact);
 
-        assertEquals(expected.contains(one.getId()), output.contains(one.getId()));
-        assertEquals(expected.contains(two.getId()), output.contains(two.getId()));
-        assertEquals(expected.size(), output.size());
+        assertEquals(4, output.get(0).getId());
+        assertEquals(8, output.get(1).getId());
+        assertEquals(2, output.size());
     }
 
     @Test
