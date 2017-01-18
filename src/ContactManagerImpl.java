@@ -42,7 +42,7 @@ public class ContactManagerImpl implements ContactManager {
         return id;
     }
 
-    public PastMeeting getPastMeeting(int id){
+    public PastMeeting getPastMeeting(int id) throws IllegalStateException {
 
         for(Meeting count : pastMeetingList) {
             if (count.getId() == id)
@@ -60,7 +60,7 @@ public class ContactManagerImpl implements ContactManager {
         return null;
     }
 
-    public FutureMeeting getFutureMeeting(int id){
+    public FutureMeeting getFutureMeeting(int id) throws IllegalStateException {
 
         for(Meeting count : futureMeetingList) {
             if(count.getId() == id)
@@ -121,7 +121,8 @@ public class ContactManagerImpl implements ContactManager {
             return streamList;
     }
 
-    public List<Meeting> getMeetingListOn(Calendar date) {
+    public List<Meeting> getMeetingListOn(Calendar date)
+            throws NullPointerException {
 
         if(date == null)
             throw new NullPointerException("Date is null!");
@@ -152,8 +153,8 @@ public class ContactManagerImpl implements ContactManager {
 
     }
 
-    public List<PastMeeting> getPastMeetingListFor(Contact contact){
-
+    public List<PastMeeting> getPastMeetingListFor(Contact contact)
+            throws IllegalArgumentException, NullPointerException {
 
         boolean check = false;
 
@@ -177,9 +178,7 @@ public class ContactManagerImpl implements ContactManager {
                 .collect(Collectors.toList());
 
         for(int i = 0; i < streamList.size() - 1; i++) {
-            if(streamList.get(i).getDate().compareTo(streamList.get(i + 1).getDate()) == 0
-                    && streamList.get(i).getContacts().containsAll(contactSet)
-                    && (streamList.get(i + 1).getContacts().containsAll(contactSet))) // remove duplicates with same date
+            if(streamList.get(i).getDate().compareTo(streamList.get(i + 1).getDate()) == 0) // remove duplicates with same date
             streamList.remove(i);
         }
 
@@ -213,7 +212,8 @@ public class ContactManagerImpl implements ContactManager {
         return id;
     }
 
-    public PastMeeting addMeetingNotes(int id, String text) {
+    public PastMeeting addMeetingNotes(int id, String text)
+            throws IllegalArgumentException, NullPointerException {
 
         for(Meeting count : futureMeetingList) {
             if(count.getDate().before(Calendar.getInstance())) { // If any of the future meetings already occurred add it to past list
@@ -260,7 +260,8 @@ public class ContactManagerImpl implements ContactManager {
         return id;
     }
 
-    public Set<Contact> getContacts(String name){
+    public Set<Contact> getContacts(String name)
+            throws NullPointerException {
 
         Set<Contact> newSet = new HashSet<>();
 
@@ -278,7 +279,8 @@ public class ContactManagerImpl implements ContactManager {
         return newSet;
     }
 
-    public Set<Contact> getContacts(int... ids){
+    public Set<Contact> getContacts(int... ids)
+            throws IllegalArgumentException {
 
         Set<Contact> newSet = new HashSet<>();
 
