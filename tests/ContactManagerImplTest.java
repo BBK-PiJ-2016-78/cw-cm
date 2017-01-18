@@ -192,7 +192,7 @@ class ContactManagerImplTest {
         contacts.add(contact2);
         date.add(Calendar.DATE, 5);
         int futureMeeting = manager.addFutureMeeting(contacts, date);
-        date.add(Calendar.DATE, -5);
+        date.add(Calendar.DATE, -6);
         int pastMeeting = manager.addNewPastMeeting(contacts, date, "past meeting");
         Meeting output = manager.getMeeting(futureMeeting); // pastMeeting can be used too
         Meeting expected = new MeetingImpl(1, date, contacts); // change 2 for pastMeeting
