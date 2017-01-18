@@ -129,18 +129,11 @@ class ContactManagerImplTest {
         manager.addFutureMeeting(contacts, testDate2);
 
         List<Meeting> output = manager.getFutureMeetingList(contact);
-        for(Meeting count : output) {
-            System.out.println("output index: " + output.indexOf(count));
-        }
         List<Meeting> expected = new ArrayList<>();
         Meeting one = new FutureMeetingImpl(5, testDate1, contacts);
         Meeting two = new FutureMeetingImpl(7, testDate2, contacts);
         expected.add(one);
         expected.add(two);
-
-         for(Meeting count : expected) {
-             System.out.println("expected index: " + expected.indexOf(count));
-        }
 
         Assert.assertThat(output.contains(one.getId()), is(expected.contains(one.getId())));
         Assert.assertThat(output.contains(one.getDate()), is(expected.contains(one.getDate())));
