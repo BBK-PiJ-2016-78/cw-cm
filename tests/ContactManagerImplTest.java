@@ -4,7 +4,9 @@
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import static org.hamcrest.CoreMatchers.*;
 
 import java.util.*;
 
@@ -115,27 +117,33 @@ class ContactManagerImplTest {
     void getFutureMeetingListTest() {
         contacts.add(contact);
         contacts2.add(contact2);
+        Calendar testDate1 = Calendar.getInstance();
+        Calendar testDate2 = Calendar.getInstance();
         manager.addNewContact("harry", "stuff");
-        date.add(Calendar.DATE, 8);
+        date.add(Calendar.DATE, 1);
         manager.addFutureMeeting(contacts2, date);
-        date.add(Calendar.DATE, 7);
-        manager.addFutureMeeting(contacts, date);
-        date.add(Calendar.DATE, 7);
-        manager.addFutureMeeting(contacts, date);
-        date.add(Calendar.DATE, 5);
-        manager.addFutureMeeting(contacts, date);
+        testDate1.add(Calendar.DATE, 1);
+        manager.addFutureMeeting(contacts, testDate1);
+        manager.addFutureMeeting(contacts, testDate1);
+        testDate2.add(Calendar.DATE, 2);
+        manager.addFutureMeeting(contacts, testDate2);
 
         List<Meeting> output = manager.getFutureMeetingList(contact);
+        for(Meeting count : output) {
+            System.out.println("output index: " + output.indexOf(count));
+        }
         List<Meeting> expected = new ArrayList<>();
-        date.add(Calendar.DATE, 5);
-        Meeting one = new FutureMeetingImpl(7, date, contacts);
-        date.add(Calendar.DATE, 7);
-        Meeting two = new FutureMeetingImpl(3, date, contacts);
+        Meeting one = new FutureMeetingImpl(5, testDate1, contacts);
+        Meeting two = new FutureMeetingImpl(7, testDate2, contacts);
         expected.add(one);
         expected.add(two);
 
-        assertEquals(expected.contains(one.getId()), output.contains(one.getId()));
-        assertEquals(expected.contains(two.getId()), output.contains(two.getId()));
+         for(Meeting count : expected) {
+             System.out.println("expected index: " + expected.indexOf(count));
+        }
+
+        Assert.assertThat(output.contains(one.getId()), is(expected.contains(one.getId())));
+        Assert.assertThat(output.contains(one.getDate()), is(expected.contains(one.getDate())));
         assertEquals(expected.size(), output.size());
 
 
@@ -182,6 +190,30 @@ class ContactManagerImplTest {
     @Test
     void getPastMeetingListForTest() {
 
+        contacts.add(contact);
+        contacts2.add(contact2);
+        manager.addNewContact("harry", "stuff");
+        date.add(Calendar.DATE, 8);
+        manager.addFutureMeeting(contacts2, date);
+        date.add(Calendar.DATE, 7);
+        manager.addFutureMeeting(contacts, date);
+        date.add(Calendar.DATE, 7);
+        manager.addFutureMeeting(contacts, date);
+        date.add(Calendar.DATE, 5);
+        manager.addFutureMeeting(contacts, date);
+
+        List<Meeting> output = manager.getFutureMeetingList(contact);
+        List<Meeting> expected = new ArrayList<>();
+        date.add(Calendar.DATE, 5);
+        Meeting one = new FutureMeetingImpl(7, date, contacts);
+        date.add(Calendar.DATE, 7);
+        Meeting two = new FutureMeetingImpl(3, date, contacts);
+        expected.add(one);
+        expected.add(two);
+
+        assertEquals(expected.contains(one.getId()), output.contains(one.getId()));
+        assertEquals(expected.contains(two.getId()), output.contains(two.getId()));
+        assertEquals(expected.size(), output.size());
     }
 
     @Test
