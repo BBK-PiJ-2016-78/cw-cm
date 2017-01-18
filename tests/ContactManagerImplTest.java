@@ -185,6 +185,12 @@ class ContactManagerImplTest {
 
         List<PastMeeting> output = manager.getPastMeetingListFor(contact);
 
+        for(PastMeeting count : output) {
+            System.out.println(count.getDate().getTime());
+            System.out.println(count.getId());
+            System.out.println(count.getNotes());
+        }
+
         assertEquals(4, output.get(0).getId());
         assertEquals(8, output.get(1).getId());
         assertEquals(2, output.size());

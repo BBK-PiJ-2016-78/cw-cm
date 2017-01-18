@@ -153,7 +153,37 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public List<PastMeeting> getPastMeetingListFor(Contact contact){
-        return null;
+
+
+        boolean check = false;
+
+        if(contact == null) {
+            throw new NullPointerException("The contact does not exist!");
+        }
+
+        List<Contact> contactList = new ArrayList<>(contactSet);
+        for(Contact count : contactList){
+            if(count.getId() == contact.getId() && count.getName().equals(contact.getName())) {
+                check = true;
+            }
+        }
+        if(!check)
+            throw new IllegalArgumentException("Cannot find contact!");
+
+        List<PastMeeting> streamList = pastMeetingList.stream()
+                .filter(a -> a.getContacts().contains(contact))
+                .sorted(Comparator.comparing(Meeting::getDate))
+                .map(PastMeeting.class::cast)
+                .collect(Collectors.toList());
+
+        for(int i = 0; i < streamList.size() - 1; i++) {
+            if(streamList.get(i).getDate().compareTo(streamList.get(i + 1).getDate()) == 0
+                    && streamList.get(i).getContacts().containsAll(contactSet)
+                    && (streamList.get(i + 1).getContacts().containsAll(contactSet))) // remove duplicates with same date
+            streamList.remove(i);
+        }
+
+        return streamList;
     }
 
     public int addNewPastMeeting(Set<Contact> contacts, Calendar date, String text)
