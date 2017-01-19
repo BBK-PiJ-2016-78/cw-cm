@@ -4,7 +4,19 @@
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class ContactManagerImplTest {
 
@@ -391,6 +403,41 @@ class ContactManagerImplTest {
     @Test
     void flushTest() {
 
+        List<Contact> contactsData = new ArrayList<>();
+        List<Meeting> futureMeetingsData = new ArrayList<>();
+        List<Meeting> pastMeetingsData = new ArrayList<>();
+        List<String> contactStrings = new ArrayList<>();
+        String contactsSource = "./src/contactsData.txt";
+        String futureMeetingsSource = "./src/futureMeetingsData.txt";
+
+        try (Stream<String> stream = Files.lines(Paths.get(contactsSource))) {
+            List<String> streamList = stream.flatMap(s -> Stream.of(s.split(", "))).collect(Collectors.toList());
+
+            for(int i = 0; i < streamList.size() - 1; i += 3)
+                contactsData.add(new ContactImpl(Integer.parseInt(streamList.get(i)), streamList.get(i+1), streamList.get(i+2)));
+
+            contacts = new HashSet<>(contactsData);
+            /*for(Contact count : contactsData){
+                System.out.println(count.getId());
+                System.out.println(count.getName());
+                System.out.println(count.getNotes());
+            }*/
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (Stream<String> stream = Files.lines(Paths.get(futureMeetingsSource))) {
+            List<String> streamList = stream.flatMap(s -> Stream.of(s.split(", "))).collect(Collectors.toList());
+
+            for(int i = 0; i < streamList.size() - 1; i +=2)
+                 contactStrings.add(streamList.get(i));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } /*catch (ParseException e) {
+            e.printStackTrace();
+        }*/
     }
 
 }

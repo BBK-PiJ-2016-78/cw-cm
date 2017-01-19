@@ -394,7 +394,7 @@ public class ContactManagerImpl implements ContactManager {
         return newSet;
     }
 
-    public void flush(){
+    public void flush() {
 
     }
 }
