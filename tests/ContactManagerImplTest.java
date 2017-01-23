@@ -407,12 +407,21 @@ class ContactManagerImplTest implements Serializable {
 
         String contactsSource = "./src/contactsData.ser";
         String futureMeetingsSource = "./src/futureMeetingsData.ser";
+        String pastMeetingsSource = "./src/pastMeetingsData.ser";
 
         manager.addNewContact("john", "stuff");
         manager.addNewContact("matt", "stuff");
         manager.addNewContact("bob", "stuff");
         String[] checkNames = {"john", "matt", "bob"};
-        manager.flush();
+
+        Calendar someDate = Calendar.getInstance();
+        someDate.add(Calendar.DATE, 5);
+        manager.addFutureMeeting(contactsSubset, someDate);
+
+        someDate.add(Calendar.DATE, -10);
+        manager.addNewPastMeeting(contactsSubset, someDate, "past meeting");
+
+        manager.flush(); // Run the flush function to save all the data
 
         try (FileInputStream fis = new FileInputStream(contactsSource)) {
 
@@ -424,11 +433,40 @@ class ContactManagerImplTest implements Serializable {
             e.printStackTrace();
         }
 
+        try (FileInputStream fis = new FileInputStream(futureMeetingsSource)) {
+
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            futureMeetingsData = (List<Meeting>) ois.readObject();
+            ois.close();
+
+        } catch (IOException | ClassNotFoundException e)  {
+            e.printStackTrace();
+        }
+
+        try (FileInputStream fis = new FileInputStream(pastMeetingsSource)) {
+
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            pastMeetingsData = (List<Meeting>) ois.readObject();
+            ois.close();
+
+        } catch (IOException | ClassNotFoundException e)  {
+            e.printStackTrace();
+        }
+
         List<Contact> checkContacts = new ArrayList<>(contactsSubset);
         assertEquals(3, checkContacts.size());
         assertEquals("john", checkContacts.get(0).getName());
         assertEquals("bob", checkContacts.get(1).getName());
         assertEquals("matt", checkContacts.get(2).getName());
+
+        assertEquals(1, futureMeetingsData.size());
+        assertEquals(1, futureMeetingsData.get(0).getId());
+        assertEquals(contactsSubset, futureMeetingsData.get(0).getContacts());
+
+        assertEquals(1, pastMeetingsData.size());
+        assertEquals(2, pastMeetingsData.get(0).getId());
+        assertEquals(contactsSubset, pastMeetingsData.get(0).getContacts());
+
 
 
 
