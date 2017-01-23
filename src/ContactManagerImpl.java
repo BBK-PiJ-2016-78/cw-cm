@@ -399,11 +399,32 @@ public class ContactManagerImpl implements ContactManager, Serializable {
 
         String contactsWrite = "./src/contactsData.ser";
         String futureMeetingsWrite = "./src/futureMeetingsData.ser";
+        String pastMeetingsWrite = "./src/pastMeetingsData.ser";
 
-        try(FileOutputStream fos = new FileOutputStream(contactsWrite);) {
+        try(FileOutputStream fos = new FileOutputStream(contactsWrite)) {
 
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(contactSet);
+            oos.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try(FileOutputStream fos = new FileOutputStream(futureMeetingsWrite)) {
+
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(futureMeetingList);
+            oos.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try(FileOutputStream fos = new FileOutputStream(pastMeetingsWrite)) {
+
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(pastMeetingList);
             oos.close();
 
         } catch (IOException e) {

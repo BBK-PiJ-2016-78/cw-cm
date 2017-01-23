@@ -1,10 +1,11 @@
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Set;
 
 /**
  * Created by hradev01 on 11-Jan-17.
  */
-public class MeetingImpl extends MeetingAbstract {
+public class MeetingImpl extends MeetingAbstract implements Serializable {
 
     private int id;
     private Calendar date;

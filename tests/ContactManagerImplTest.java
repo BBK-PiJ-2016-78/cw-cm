@@ -101,9 +101,10 @@ class ContactManagerImplTest implements Serializable {
         contacts.add(contact);
         contacts.add(contact2);
         date.add(Calendar.DATE, 5);
+        manager.addFutureMeeting(contacts, date);
         int futureMeeting = manager.addFutureMeeting(contacts, date);
         FutureMeeting output = manager.getFutureMeeting(futureMeeting);
-        FutureMeeting expected = new FutureMeetingImpl(1, date, contacts);
+        FutureMeeting expected = new FutureMeetingImpl(3, date, contacts);
         assertEquals(expected.getId(), output.getId());
     }
 
@@ -412,14 +413,16 @@ class ContactManagerImplTest implements Serializable {
         manager.addNewContact("john", "stuff");
         manager.addNewContact("matt", "stuff");
         manager.addNewContact("bob", "stuff");
-        String[] checkNames = {"john", "matt", "bob"};
 
-        Calendar someDate = Calendar.getInstance();
-        someDate.add(Calendar.DATE, 5);
-        manager.addFutureMeeting(contactsSubset, someDate);
+        contacts.add(contact2);
+        date.add(Calendar.DATE, 7);
+        manager.addFutureMeeting(contacts, date);
+        manager.addFutureMeeting(contacts, date);
+        manager.addFutureMeeting(contacts, date);
 
-        someDate.add(Calendar.DATE, -10);
-        manager.addNewPastMeeting(contactsSubset, someDate, "past meeting");
+        date.add(Calendar.DATE, -10);
+        manager.addNewPastMeeting(contacts, date, "past meeting");
+        manager.addNewPastMeeting(contacts, date, "past meeting");
 
         manager.flush(); // Run the flush function to save all the data
 
@@ -443,6 +446,7 @@ class ContactManagerImplTest implements Serializable {
             e.printStackTrace();
         }
 
+
         try (FileInputStream fis = new FileInputStream(pastMeetingsSource)) {
 
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -455,20 +459,14 @@ class ContactManagerImplTest implements Serializable {
 
         List<Contact> checkContacts = new ArrayList<>(contactsSubset);
         assertEquals(3, checkContacts.size());
-        assertEquals("john", checkContacts.get(0).getName());
-        assertEquals("bob", checkContacts.get(1).getName());
-        assertEquals("matt", checkContacts.get(2).getName());
 
-        assertEquals(1, futureMeetingsData.size());
-        assertEquals(1, futureMeetingsData.get(0).getId());
-        assertEquals(contactsSubset, futureMeetingsData.get(0).getContacts());
+        assertEquals(3, futureMeetingsData.size());
+        assertEquals(5, futureMeetingsData.get(1).getId());
+        assertEquals(7, futureMeetingsData.get(2).getId());
 
-        assertEquals(1, pastMeetingsData.size());
+        assertEquals(2, pastMeetingsData.size());
         assertEquals(2, pastMeetingsData.get(0).getId());
-        assertEquals(contactsSubset, pastMeetingsData.get(0).getContacts());
-
-
-
+        assertEquals(4, pastMeetingsData.get(1).getId());
 
     }
 }
