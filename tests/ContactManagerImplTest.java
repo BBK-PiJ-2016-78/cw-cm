@@ -5,10 +5,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -16,9 +13,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-class ContactManagerImplTest {
+class ContactManagerImplTest implements Serializable {
 
     private Calendar date = Calendar.getInstance(); // Get the current date
     private Set<Contact> contacts = new HashSet<>();
@@ -403,60 +401,36 @@ class ContactManagerImplTest {
     @Test
     void flushTest() {
 
-        List<Contact> contactsData = new ArrayList<>();
         Set<Contact> contactsSubset = new HashSet<>();
         List<Meeting> futureMeetingsData = new ArrayList<>();
         List<Meeting> pastMeetingsData = new ArrayList<>();
-        List<String> contactStrings = new ArrayList<>();
-        List<String> contactToFind = new ArrayList<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        String contactsSource = "./src/contactsData.txt";
-        String futureMeetingsSource = "./src/futureMeetingsData.txt";
 
-        try (Stream<String> stream = Files.lines(Paths.get(contactsSource))) {
-            List<String> streamList = stream.flatMap(s -> Stream.of(s.split(", "))).collect(Collectors.toList());
+        String contactsSource = "./src/contactsData.ser";
+        String futureMeetingsSource = "./src/futureMeetingsData.ser";
 
-            for(int i = 0; i < streamList.size() - 1; i += 3)
-                contactsData.add(new ContactImpl(Integer.parseInt(streamList.get(i)), streamList.get(i+1), streamList.get(i+2)));
+        manager.addNewContact("john", "stuff");
+        manager.addNewContact("matt", "stuff");
+        manager.addNewContact("bob", "stuff");
+        String[] checkNames = {"john", "matt", "bob"};
+        manager.flush();
 
-            contacts = new HashSet<>(contactsData);
+        try (FileInputStream fis = new FileInputStream(contactsSource)) {
 
-        } catch (IOException e) {
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            contactsSubset = (Set<Contact>) ois.readObject();
+            ois.close();
+
+        } catch (IOException | ClassNotFoundException e)  {
             e.printStackTrace();
         }
 
-        try (Stream<String> stream = Files.lines(Paths.get(futureMeetingsSource))) {
-            List<String> streamList = stream.flatMap(s -> Stream.of(s.split(", "))).collect(Collectors.toList());
+        List<Contact> checkContacts = new ArrayList<>(contactsSubset);
+        assertEquals(3, checkContacts.size());
+        assertEquals("john", checkContacts.get(0).getName());
+        assertEquals("bob", checkContacts.get(1).getName());
+        assertEquals("matt", checkContacts.get(2).getName());
 
-            int id = 0;
-            Calendar futureDate = Calendar.getInstance();
-            String time;
 
-            for(int i = 2; i < streamList.size(); i += 3){
-                contactStrings.add(streamList.get(i));
-                contactToFind = contactStrings.stream().flatMap(s -> Stream.of(s.split("; "))).collect(Collectors.toList());
-                for(int j = 0; j < contactsData.size() - 1; j++) {
-                    if (contactToFind.get(j).equals(contactsData.get(j).getName())) {
-                        contactsSubset.add(contactsData.get(j));
-                        for(int k = 0; k < streamList.size() - 1; k += 3) {
-                            id = Integer.parseInt(streamList.get(k));
-                            time = streamList.get(k + 1);
-                            futureDate.setTime(sdf.parse(time));
-                            futureMeetingsData.add(new FutureMeetingImpl(id, futureDate, contactsSubset));
-                        }
-                    }
-                 }
-            }
-
-            for(Meeting count : futureMeetingsData){
-               // System.out.println(count.getId());
-                //System.out.println(count.getDate().getTime());
-
-            }
-            System.out.println(contactsData.size());
-    } catch (ParseException | IOException e) {
-            e.printStackTrace();
-        }
 
     }
 }

@@ -3,10 +3,11 @@
  */
 
 
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ContactManagerImpl implements ContactManager {
+public class ContactManagerImpl implements ContactManager, Serializable {
 
     private int id = 0;
     private List<Meeting> futureMeetingList = new ArrayList<>();
@@ -395,6 +396,19 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public void flush() {
+
+        String contactsWrite = "./src/contactsData.ser";
+        String futureMeetingsWrite = "./src/futureMeetingsData.ser";
+
+        try(FileOutputStream fos = new FileOutputStream(contactsWrite);) {
+
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(contactSet);
+            oos.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
