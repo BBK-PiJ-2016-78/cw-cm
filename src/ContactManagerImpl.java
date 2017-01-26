@@ -466,6 +466,15 @@ public class ContactManagerImpl implements ContactManager, Serializable {
             e.printStackTrace();
         }
 
+        int newID = 0;
+        for(Meeting count : futureMeetingList) {
+            if(count.getDate().compareTo(Calendar.getInstance()) == -1) {
+                newID = pastMeetingList.size() + 2;
+                pastMeetingList.add(new PastMeetingImpl(newID, count.getDate(), count.getContacts(), "past meeting"));
+            }
+
+        }
+
         try(FileOutputStream fos = new FileOutputStream(pastMeetingsWrite)) { //Write pastMeetings data to file
 
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -481,7 +490,7 @@ public class ContactManagerImpl implements ContactManager, Serializable {
             Thread t = new Thread(this::flush, "Shutdown-thread");
             Runtime.getRuntime().addShutdownHook(t);
             Runtime.getRuntime().removeShutdownHook(t);
-        } catch(IllegalStateException e) {
+        } catch(Exception e) {
             e.printStackTrace();
         }
     }
