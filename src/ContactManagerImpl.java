@@ -466,15 +466,6 @@ public class ContactManagerImpl implements ContactManager, Serializable {
             e.printStackTrace();
         }
 
-        int newID = 0;
-        for(Meeting count : futureMeetingList) {
-            if(count.getDate().compareTo(Calendar.getInstance()) == -1) {
-                newID = pastMeetingList.size() + 2;
-                pastMeetingList.add(new PastMeetingImpl(newID, count.getDate(), count.getContacts(), "past meeting"));
-            }
-
-        }
-
         try(FileOutputStream fos = new FileOutputStream(pastMeetingsWrite)) { //Write pastMeetings data to file
 
             ObjectOutputStream oos = new ObjectOutputStream(fos);
