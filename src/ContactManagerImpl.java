@@ -1,7 +1,6 @@
-/**
- * Created by hradev01 on 09-Jan-17.
+/*
+  Created by hradev01 on 09-Jan-17.
  */
-
 
 import java.io.*;
 import java.util.*;
@@ -13,8 +12,6 @@ public class ContactManagerImpl implements ContactManager, Serializable {
     private List<Meeting> futureMeetingList = new ArrayList<>();
     private List<Meeting> pastMeetingList = new ArrayList<>();
     private Set<Contact> contactSet = new HashSet<>();
-
-    public ContactManagerImpl() {}
 
 
     /**
@@ -152,7 +149,7 @@ public class ContactManagerImpl implements ContactManager, Serializable {
                     .collect(Collectors.toList());
 
             for(int i = 0; i < streamList.size() - 1; i++) {
-                if(streamList.get(i).getDate().compareTo(streamList.get(i + 1).getDate()) == 0); // remove duplicates with same date
+                if(streamList.get(i).getDate().compareTo(streamList.get(i + 1).getDate()) == 0) // remove duplicates with same date
                     streamList.remove(i);
             }
 
@@ -189,7 +186,7 @@ public class ContactManagerImpl implements ContactManager, Serializable {
         for(int i = 0; i < streamList.size() - 1; i++) {
             if(streamList.get(i).getDate().compareTo(streamList.get(i + 1).getDate()) == 0
                     && streamList.get(i).getContacts().containsAll(contactSet)
-                    && (streamList.get(i + 1).getContacts().containsAll(contactSet))); // remove duplicates with same date and contacts
+                    && (streamList.get(i + 1).getContacts().containsAll(contactSet))) // remove duplicates with same date and contacts
 
             streamList.remove(i);
         }
@@ -435,9 +432,9 @@ public class ContactManagerImpl implements ContactManager, Serializable {
             e.printStackTrace();
         }
 
-        //after loading the list check if some of the dates in futureMeeintgList are expired and remove them from list
+        //after loading the list check if some of the dates in futureMeetingList are expired and remove them from list
         //add them to pastMeetingList with an even ID
-        int newID = 0;
+        int newID;
         for(Meeting count : futureMeetingList) {
             if(count.getDate().compareTo(Calendar.getInstance()) == -1) {
                 newID = pastMeetingList.size() + 2;
