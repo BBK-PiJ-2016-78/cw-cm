@@ -395,13 +395,58 @@ public class ContactManagerImpl implements ContactManager, Serializable {
         return newSet;
     }
 
+
+    /**
+     * To be used to load all data from files, when the program is first launched and before writing new data
+     */
+    public void loadData() {
+
+        String contactsLoad = "./src/contactsData.ser";
+        String futureMeetingsLoad = "./src/futureMeetingsData.ser";
+        String pastMeetingsLoad = "./src/pastMeetingsData.ser";
+
+        try (FileInputStream fis = new FileInputStream(contactsLoad)) { //Load Contacts data from files
+
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            contactSet = (Set<Contact>) ois.readObject();
+            ois.close();
+
+        } catch (IOException | ClassNotFoundException e)  {
+            e.printStackTrace();
+        }
+
+        try (FileInputStream fis = new FileInputStream(futureMeetingsLoad)) { // Load futureMeetings data from file
+
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            futureMeetingList = (List<Meeting>) ois.readObject();
+            ois.close();
+
+        } catch (IOException | ClassNotFoundException e)  {
+            e.printStackTrace();
+        }
+
+        try (FileInputStream fis = new FileInputStream(pastMeetingsLoad)) { // Load pastMeetings data from file
+
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            pastMeetingList = (List<Meeting>) ois.readObject();
+            ois.close();
+
+        } catch (IOException | ClassNotFoundException e)  {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Used to write all current data to files, either when called or on shutdown
+     */
     public void flush() {
 
         String contactsWrite = "./src/contactsData.ser";
         String futureMeetingsWrite = "./src/futureMeetingsData.ser";
         String pastMeetingsWrite = "./src/pastMeetingsData.ser";
 
-        try(FileOutputStream fos = new FileOutputStream(contactsWrite)) {
+        try(FileOutputStream fos = new FileOutputStream(contactsWrite)) { // Write contacts data to file
 
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(contactSet);
@@ -411,7 +456,7 @@ public class ContactManagerImpl implements ContactManager, Serializable {
             e.printStackTrace();
         }
 
-        try(FileOutputStream fos = new FileOutputStream(futureMeetingsWrite)) {
+        try(FileOutputStream fos = new FileOutputStream(futureMeetingsWrite)) { //Write futureMeetings data to file
 
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(futureMeetingList);
@@ -421,7 +466,7 @@ public class ContactManagerImpl implements ContactManager, Serializable {
             e.printStackTrace();
         }
 
-        try(FileOutputStream fos = new FileOutputStream(pastMeetingsWrite)) {
+        try(FileOutputStream fos = new FileOutputStream(pastMeetingsWrite)) { //Write pastMeetings data to file
 
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(pastMeetingList);
@@ -431,5 +476,13 @@ public class ContactManagerImpl implements ContactManager, Serializable {
             e.printStackTrace();
         }
 
+        //Call the flush function in a new thread when shutting down
+        try {
+            Thread t = new Thread(this::flush, "Shutdown-thread");
+            Runtime.getRuntime().addShutdownHook(t);
+            Runtime.getRuntime().removeShutdownHook(t);
+        } catch(IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 }
