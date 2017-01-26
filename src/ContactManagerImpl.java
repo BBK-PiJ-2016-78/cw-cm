@@ -21,7 +21,7 @@ public class ContactManagerImpl implements ContactManager, Serializable {
      *
      * @param contacts a set of contacts that will participate in the meeting
      * @param date the date on which the meeting will take place
-     * @return the ID
+     * @return the ID, odd values for future meetings
      * @throws IllegalArgumentException if meeting is in the past or contact doesn't exist
      * @throws NullPointerException if meeting or date are null
      */
@@ -433,6 +433,17 @@ public class ContactManagerImpl implements ContactManager, Serializable {
 
         } catch (IOException | ClassNotFoundException e)  {
             e.printStackTrace();
+        }
+
+        //after loading the list check if some of the dates in futureMeeintgList are expired and remove them from list
+        //add them to pastMeetingList with an even ID
+        int newID = 0;
+        for(Meeting count : futureMeetingList) {
+            if(count.getDate().compareTo(Calendar.getInstance()) == -1) {
+                newID = pastMeetingList.size() + 2;
+                pastMeetingList.add(new PastMeetingImpl(newID, count.getDate(), count.getContacts(), "past meeting"));
+                futureMeetingList.remove(count);
+            }
         }
     }
 
