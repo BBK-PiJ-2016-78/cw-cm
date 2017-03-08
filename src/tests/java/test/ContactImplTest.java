@@ -1,11 +1,15 @@
+package test;
+
+import impl.ContactImpl;
 import org.junit.jupiter.api.Test;
+import spec.Contact;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by hradev01 on 09-Jan-17.
  */
-class ContactImplTest {
+public class ContactImplTest {
 
     Contact contacts = new ContactImpl(1, "name", "");
 

@@ -1,4 +1,10 @@
+package test;
+
+import impl.ContactImpl;
+import impl.PastMeetingImpl;
 import org.junit.jupiter.api.Test;
+import spec.Contact;
+import spec.PastMeeting;
 
 import java.util.*;
 
@@ -7,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Created by hradev01 on 09-Jan-17.
  */
-class PastMeetingImplTest {
+public class PastMeetingImplTest {
 
     Calendar date = new GregorianCalendar(2017, 01, 10);
     Set<Contact> contacts = new HashSet<>();

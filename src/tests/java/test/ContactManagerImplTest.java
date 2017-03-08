@@ -1,22 +1,17 @@
-/**
+package test; /**
  * Created by hradev01 on 09-Jan-17.
  */
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import impl.*;
 import org.junit.jupiter.api.Test;
+import spec.*;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-class ContactManagerImplTest implements Serializable {
+public class ContactManagerImplTest implements Serializable {
 
     private Calendar date = Calendar.getInstance(); // Get the current date
     private Set<Contact> contacts = new HashSet<>();
@@ -406,9 +401,9 @@ class ContactManagerImplTest implements Serializable {
         List<Meeting> futureMeetingsData = new ArrayList<>();
         List<Meeting> pastMeetingsData = new ArrayList<>();
 
-        String contactsSource = "./src/contactsData.ser";
-        String futureMeetingsSource = "./src/futureMeetingsData.ser";
-        String pastMeetingsSource = "./src/pastMeetingsData.ser";
+        String contactsSource = "./src/main/java/impl/contactsData.ser";
+        String futureMeetingsSource = "./src/main/java/impl/futureMeetingsData.ser";
+        String pastMeetingsSource = "./src/main/java/impl/pastMeetingsData.ser";
 
         manager.addNewContact("john", "stuff");
         manager.addNewContact("matt", "stuff");

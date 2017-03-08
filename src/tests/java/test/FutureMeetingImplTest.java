@@ -1,4 +1,10 @@
+package test;
+
+import impl.ContactImpl;
+import impl.FutureMeetingImpl;
 import org.junit.Test;
+import spec.Contact;
+import spec.FutureMeeting;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;

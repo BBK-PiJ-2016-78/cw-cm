@@ -1,6 +1,10 @@
+package impl;
+
 /*
   Created by hradev01 on 09-Jan-17.
  */
+
+import spec.*;
 
 import java.io.*;
 import java.util.*;
@@ -25,12 +29,12 @@ public class ContactManagerImpl implements ContactManager, Serializable {
     public int addFutureMeeting(Set<Contact> contacts, Calendar date)
             throws IllegalArgumentException, NullPointerException {
 
-        if(date != null && futureMeetingList != null) {
-            if(!date.before(Calendar.getInstance()) && !contacts.contains(null)) {
+        if (date != null && futureMeetingList != null) {
+            if (!date.before(Calendar.getInstance()) && !contacts.contains(null)) {
                 int size = futureMeetingList.size();
-                if(size == 0) {
+                if (size == 0) {
                     id++;
-                } else if(futureMeetingList.get(size - 1).getId() % 2 == 0) { // IDs for futureMeetings are odd
+                } else if (futureMeetingList.get(size - 1).getId() % 2 == 0) { // IDs for futureMeetings are odd
                     id = futureMeetingList.get(size - 1).getId();
                     id++;
                 } else {
@@ -58,15 +62,16 @@ public class ContactManagerImpl implements ContactManager, Serializable {
      */
     public PastMeeting getPastMeeting(int id) throws IllegalStateException {
 
-        for(Meeting count : pastMeetingList) {
-            if (count.getId() == id)
+        for (Meeting count : pastMeetingList) {
+            if (count.getId() == id) {
                 return (PastMeeting) count;
+            }
         }
 
-        for(Meeting count : futureMeetingList) {
-            if (count.getId() == id && !count.getDate().before(Calendar.getInstance()))
+        for (Meeting count : futureMeetingList) {
+            if (count.getId() == id && !count.getDate().before(Calendar.getInstance())) {
                 throw new IllegalStateException("This is a future planned meeting!");
-            else {
+            } else {
                 pastMeetingList.add(count);
                 return (PastMeeting) count;
             }
@@ -83,14 +88,15 @@ public class ContactManagerImpl implements ContactManager, Serializable {
      */
     public FutureMeeting getFutureMeeting(int id) throws IllegalStateException {
 
-        for(Meeting count : futureMeetingList) {
+        for (Meeting count : futureMeetingList) {
             if(count.getId() == id)
                 return (FutureMeeting) count;
         }
 
-        for(Meeting count : pastMeetingList) {
-            if(count.getId() == id)
+        for (Meeting count : pastMeetingList) {
+            if (count.getId() == id) {
                 throw new IllegalStateException("This is a past meeting!");
+            }
         }
 
         return null;
@@ -102,16 +108,18 @@ public class ContactManagerImpl implements ContactManager, Serializable {
      * @param id the ID for the meeting
      * @return the Meeting with the requested ID
      */
-    public Meeting getMeeting(int id){
+    public Meeting getMeeting(int id) {
 
-        if(id > 0) {
+        if (id > 0) {
             for (Meeting count : futureMeetingList) {
-                if(count.getId() == id)
+                if (count.getId() == id) {
                     return count;
+                }
             }
             for (Meeting count: pastMeetingList) {
-                if(count.getId() == id)
+                if (count.getId() == id) {
                     return count;
+                }
             }
         }
         return null;
@@ -130,17 +138,17 @@ public class ContactManagerImpl implements ContactManager, Serializable {
 
         boolean check = false;
 
-        if(contact == null) {
+        if (contact == null) {
             throw new NullPointerException("The contact does not exist!");
         }
 
         List<Contact> contactList = new ArrayList<>(contactSet);
-        for(Contact count : contactList){
-            if(count.getId() == contact.getId() && count.getName().equals(contact.getName())) {
+        for (Contact count : contactList) {
+            if (count.getId() == contact.getId() && count.getName().equals(contact.getName())) {
                 check = true;
             }
         }
-        if(!check)
+        if (!check)
             throw new IllegalArgumentException("Cannot find contact!");
 
             List<Meeting> streamList = futureMeetingList.stream()
@@ -148,8 +156,8 @@ public class ContactManagerImpl implements ContactManager, Serializable {
                     .sorted(Comparator.comparing(Meeting::getDate))
                     .collect(Collectors.toList());
 
-            for(int i = 0; i < streamList.size() - 1; i++) {
-                if(streamList.get(i).getDate().compareTo(streamList.get(i + 1).getDate()) == 0) // remove duplicates with same date
+            for (int i = 0; i < streamList.size() - 1; i++) {
+                if (streamList.get(i).getDate().compareTo(streamList.get(i + 1).getDate()) == 0) // remove duplicates with same date
                     streamList.remove(i);
             }
 
@@ -166,15 +174,16 @@ public class ContactManagerImpl implements ContactManager, Serializable {
     public List<Meeting> getMeetingListOn(Calendar date)
             throws NullPointerException {
 
-        if(date == null)
+        if (date == null) {
             throw new NullPointerException("Date is null!");
+        }
 
         List<Meeting> allMeetings = new ArrayList<>();
 
-        for(Meeting count : futureMeetingList) {
+        for (Meeting count : futureMeetingList) {
             allMeetings.add(count);
         }
-        for(Meeting count : pastMeetingList) {
+        for (Meeting count : pastMeetingList) {
             allMeetings.add(count);
         }
 
@@ -183,12 +192,12 @@ public class ContactManagerImpl implements ContactManager, Serializable {
                 .sorted(Comparator.comparing(Meeting::getDate))
                 .collect(Collectors.toList());
 
-        for(int i = 0; i < streamList.size() - 1; i++) {
-            if(streamList.get(i).getDate().compareTo(streamList.get(i + 1).getDate()) == 0
+        for (int i = 0; i < streamList.size() - 1; i++) {
+            if (streamList.get(i).getDate().compareTo(streamList.get(i + 1).getDate()) == 0
                     && streamList.get(i).getContacts().containsAll(contactSet)
-                    && (streamList.get(i + 1).getContacts().containsAll(contactSet))) // remove duplicates with same date and contacts
-
-            streamList.remove(i);
+                    && streamList.get(i + 1).getContacts().containsAll(contactSet)) { // remove duplicates with same date and contacts
+                streamList.remove(i);
+            }
         }
 
         return streamList;
@@ -208,18 +217,19 @@ public class ContactManagerImpl implements ContactManager, Serializable {
 
         boolean check = false;
 
-        if(contact == null) {
+        if (contact == null) {
             throw new NullPointerException("The contact does not exist!");
         }
 
         List<Contact> contactList = new ArrayList<>(contactSet);
-        for(Contact count : contactList){
-            if(count.getId() == contact.getId() && count.getName().equals(contact.getName())) {
+        for (Contact count : contactList) {
+            if (count.getId() == contact.getId() && count.getName().equals(contact.getName())) {
                 check = true;
             }
         }
-        if(!check)
+        if (!check) {
             throw new IllegalArgumentException("Cannot find contact!");
+        }
 
         List<PastMeeting> streamList = pastMeetingList.stream()
                 .filter(a -> a.getContacts().contains(contact))
@@ -227,9 +237,10 @@ public class ContactManagerImpl implements ContactManager, Serializable {
                 .map(PastMeeting.class::cast)
                 .collect(Collectors.toList());
 
-        for(int i = 0; i < streamList.size() - 1; i++) {
-            if(streamList.get(i).getDate().compareTo(streamList.get(i + 1).getDate()) == 0) // remove duplicates with same date
-            streamList.remove(i);
+        for (int i = 0; i < streamList.size() - 1; i++) {
+            if (streamList.get(i).getDate().compareTo(streamList.get(i + 1).getDate()) == 0) { // remove duplicates with same date
+                streamList.remove(i);
+            }
         }
 
         return streamList;
@@ -248,12 +259,12 @@ public class ContactManagerImpl implements ContactManager, Serializable {
     public int addNewPastMeeting(Set<Contact> contacts, Calendar date, String text)
             throws IllegalArgumentException, NullPointerException {
 
-        if(date != null && contacts != null && text != null) {
-            if(date.before(Calendar.getInstance()) && !contacts.contains(null) && contacts.size() != 0) {
+        if (date != null && contacts != null && text != null) {
+            if (date.before(Calendar.getInstance()) && !contacts.contains(null) && contacts.size() != 0) {
                 int size = pastMeetingList.size();
-                if(size == 0) {
+                if (size == 0) {
                     id = 2;
-                } else if(pastMeetingList.get(size - 1).getId() % 2 == 1) { // IDs for pastMeetings are even
+                } else if(pastMeetingList.get(size - 1).getId() % 2 != 0) { // IDs for pastMeetings are even
                     id = pastMeetingList.get(size - 1).getId();
                     id++;
                 } else {
@@ -284,24 +295,24 @@ public class ContactManagerImpl implements ContactManager, Serializable {
     public PastMeeting addMeetingNotes(int id, String text)
             throws IllegalArgumentException, NullPointerException {
 
-        for(Meeting count : futureMeetingList) {
-            if(count.getDate().before(Calendar.getInstance())) { // If any of the future meetings already occurred add it to past list
+        for (Meeting count : futureMeetingList) {
+            if (count.getDate().before(Calendar.getInstance())) { // If any of the future meetings already occurred add it to past list
                 pastMeetingList.add(count);
             }
         }
         PastMeeting past = getPastMeeting(id);
         PastMeeting addedNotes;
 
-        if(past == null)
+        if (past == null) {
             throw new IllegalArgumentException("Meeting does not exist!");
-        else {
+        } else {
             int index = pastMeetingList.indexOf(past);
             int newId = past.getId();
             Calendar newDate = past.getDate();
             Set<Contact> newContacts = past.getContacts();
-            if(text == null)
+            if (text == null) {
                 throw new NullPointerException("No notes added!");
-            else {
+            } else {
                 pastMeetingList.remove(index);
                 addedNotes = new PastMeetingImpl(newId, newDate, newContacts, text);
                 pastMeetingList.add(index, addedNotes);
@@ -376,18 +387,20 @@ public class ContactManagerImpl implements ContactManager, Serializable {
 
         Set<Contact> newSet = new HashSet<>();
 
-        if(id == 0)
+        if (id == 0) {
             throw new IllegalArgumentException("ID can't be 0");
-        else {
-            for(Contact count : contactSet) {
-                for(int id : ids) {
-                    if (count.getId() == id)
+        } else {
+            for (Contact count : contactSet) {
+                for (int id : ids) {
+                    if (count.getId() == id) {
                         newSet.add(count);
+                    }
                 }
             }
         }
-        if(newSet.size() == 0)
+        if (newSet.size() == 0) {
             throw new IllegalArgumentException("No contacts found with this ID!");
+        }
 
         return newSet;
     }
@@ -398,9 +411,9 @@ public class ContactManagerImpl implements ContactManager, Serializable {
      */
     public void loadData() {
 
-        String contactsLoad = "./src/contactsData.ser";
-        String futureMeetingsLoad = "./src/futureMeetingsData.ser";
-        String pastMeetingsLoad = "./src/pastMeetingsData.ser";
+        String contactsLoad = "./src/main/java/impl/contactsData.ser";
+        String futureMeetingsLoad = "./src/main/java/impl/futureMeetingsData.ser";
+        String pastMeetingsLoad = "./src/main/java/impl/pastMeetingsData.ser";
 
         try (FileInputStream fis = new FileInputStream(contactsLoad)) { //Load Contacts data from files
 
@@ -435,8 +448,8 @@ public class ContactManagerImpl implements ContactManager, Serializable {
         //after loading the list check if some of the dates in futureMeetingList are expired and remove them from list
         //add them to pastMeetingList with an even ID
         int newID;
-        for(Meeting count : futureMeetingList) {
-            if(count.getDate().compareTo(Calendar.getInstance()) == -1) {
+        for (Meeting count : futureMeetingList) {
+            if (count.getDate().compareTo(Calendar.getInstance()) == -1) {
                 newID = pastMeetingList.size() + 2;
                 pastMeetingList.add(new PastMeetingImpl(newID, count.getDate(), count.getContacts(), "past meeting"));
                 futureMeetingList.remove(count);
@@ -450,11 +463,11 @@ public class ContactManagerImpl implements ContactManager, Serializable {
      */
     public void flush() {
 
-        String contactsWrite = "./src/contactsData.ser";
-        String futureMeetingsWrite = "./src/futureMeetingsData.ser";
-        String pastMeetingsWrite = "./src/pastMeetingsData.ser";
+        String contactsWrite = "./src/main/java/impl/contactsData.ser";
+        String futureMeetingsWrite = "./src/main/java/impl/futureMeetingsData.ser";
+        String pastMeetingsWrite = "./src/main/java/impl/pastMeetingsData.ser";
 
-        try(FileOutputStream fos = new FileOutputStream(contactsWrite)) { // Write contacts data to file
+        try (FileOutputStream fos = new FileOutputStream(contactsWrite)) { // Write contacts data to file
 
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(contactSet);
@@ -464,7 +477,7 @@ public class ContactManagerImpl implements ContactManager, Serializable {
             e.printStackTrace();
         }
 
-        try(FileOutputStream fos = new FileOutputStream(futureMeetingsWrite)) { //Write futureMeetings data to file
+        try (FileOutputStream fos = new FileOutputStream(futureMeetingsWrite)) { //Write futureMeetings data to file
 
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(futureMeetingList);
@@ -474,7 +487,7 @@ public class ContactManagerImpl implements ContactManager, Serializable {
             e.printStackTrace();
         }
 
-        try(FileOutputStream fos = new FileOutputStream(pastMeetingsWrite)) { //Write pastMeetings data to file
+        try (FileOutputStream fos = new FileOutputStream(pastMeetingsWrite)) { //Write pastMeetings data to file
 
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(pastMeetingList);
@@ -489,7 +502,7 @@ public class ContactManagerImpl implements ContactManager, Serializable {
             Thread t = new Thread(this::flush, "Shutdown-thread");
             Runtime.getRuntime().addShutdownHook(t);
             Runtime.getRuntime().removeShutdownHook(t);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

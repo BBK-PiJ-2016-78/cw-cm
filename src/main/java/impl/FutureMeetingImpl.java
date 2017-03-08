@@ -1,3 +1,8 @@
+package impl;
+
+import spec.Contact;
+import spec.FutureMeeting;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Set;
@@ -9,9 +14,9 @@ public class FutureMeetingImpl extends MeetingImpl implements FutureMeeting, Ser
 
     /**
      *
-     * @param id
-     * @param date
-     * @param contacts
+     * @param id the id of the meeting
+     * @param date the date of the meeting
+     * @param contacts the contacts participating in the meeting
      */
     public FutureMeetingImpl(int id, Calendar date, Set<Contact> contacts) {
         super(id, date, contacts);

@@ -1,11 +1,16 @@
+package test;
+
+import impl.ContactImpl;
+import impl.MeetingImpl;
 import org.junit.Test;
+import spec.Contact;
+import spec.Meeting;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
