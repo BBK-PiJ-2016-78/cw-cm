@@ -1,1 +1,20 @@
+Please look at the general comments to see if any apply.
 
+Reasonable set of tests.
+
+Please see any feedback from the analysis tools.
+
+Add javadoc for private fields and methods.
+
+Only need to make the CM impl class serialisable as that then 
+covers the other objects.
+
+Interesting use of abstract class for meeting.
+
+Good use of Java 8 constructs.
+
+Some of the code could have been refactored to save duplication.
+
+File names tend to be constants.
+
+Very good effort. Distinction.
